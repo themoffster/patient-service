@@ -1,0 +1,69 @@
+plugins {
+    id 'info.solidsoft.pitest' version '1.6.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'java-gradle-plugin'
+    id 'org.springframework.boot' version '2.6.3'
+    id 'org.unbroken-dome.test-sets' version '4.0.0'
+}
+
+group = 'uk.com.poodle'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    all*.exclude group: 'ch.qos.logback', module: 'logback-classic'
+}
+
+testSets {
+    integrationTest { dirName = 'integration-test' }
+}
+
+dependencies {
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.postgresql:postgresql'
+    implementation 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    runtimeOnly 'org.springdoc:springdoc-openapi-ui:1.6.5'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.zonky.test:embedded-database-spring-test:2.1.1'
+    testImplementation 'io.zonky.test:embedded-postgres:1.3.1'
+    integrationTestImplementation 'org.springframework.cloud:spring-cloud-contract-wiremock:3.1.0'
+    integrationTestRuntimeOnly 'io.zonky.test.postgres:embedded-postgres-binaries-linux-amd64:14.1.0'
+    pitest 'org.pitest:pitest-junit5-plugin:0.15'
+}
+
+tasks.register('mutationTest') {
+    dependsOn('pitest')
+}
+
+test {
+    useJUnitPlatform()
+}
+
+integrationTest {
+    useJUnitPlatform()
+}
+
+dependencies {
+    integrationTestImplementation sourceSets.test.output
+    integrationTestRuntimeOnly sourceSets.test.output
+}
+
+pitest {
+    coverageThreshold = 100
+    mutationThreshold = 100
+    outputFormats = ['HTML', 'XML']
+    targetClasses = ['**.*Mapper', '**.*Service', '**.*Utils']
+    targetTests = ['**.*MapperTest', '**.*ServiceTest', '**.*UtilsTest']
+    timestampedReports = false
+    testPlugin = 'junit5'
+}

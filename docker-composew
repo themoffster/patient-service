@@ -1,0 +1,9 @@
+#!/bin/bash -ex
+
+set -a
+
+./gradlew bootJar
+
+set +a
+
+docker-compose $@

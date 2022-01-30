@@ -1,0 +1,33 @@
+---
+info:
+  app:
+    title: Patient Service
+    description: Service for storing and maintaining patient records.
+
+server:
+  port: 8081
+
+spring:
+  application:
+    name: patient-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-test-query: select 1
+      maximum-pool-size: 10
+      minimum-idle: 1
+    url: jdbc:postgresql://localhost:5432/practice
+    username: patient_service_rw
+    password: patient_service_rw
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
+    url: ${spring.datasource.url}
+    user: patient_service_admin
+    password: patient_service_admin
+  jackson:
+    default-property-inclusion: NON_NULL
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
