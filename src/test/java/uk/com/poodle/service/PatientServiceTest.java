@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.com.poodle.data.PatientRepository;
 import uk.com.poodle.domain.Patient;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,6 +27,16 @@ class PatientServiceTest {
 
     @InjectMocks
     private PatientService service;
+
+    @Test
+    void shouldRetrieveAllPatients() {
+        when(mockRepository.findAll()).thenReturn(List.of(buildNewPatientEntity(PATIENT_ID)));
+
+        List<Patient> patients = service.getAllPatients();
+
+        assertEquals(1, patients.size());
+        assertEquals(buildNewPatient(), patients.get(0));
+    }
 
     @Test
     void shouldRetrievePatient() {

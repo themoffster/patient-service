@@ -9,6 +9,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.com.poodle.service.PatientService;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
@@ -28,6 +29,15 @@ class PatientControllerTest {
 
     @MockBean
     private PatientService mockService;
+
+    @Test
+    void shouldRetrieveAllPatients() throws Exception {
+        when(mockService.getAllPatients()).thenReturn(List.of(buildNewPatient()));
+
+        mvc.perform(get("/patients/"))
+            .andExpect(status().isOk())
+            .andExpect(content().json(fileToString("patients.json", getClass())));
+    }
 
     @Test
     void shouldRetrievePatient() throws Exception {

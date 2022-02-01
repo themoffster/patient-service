@@ -15,6 +15,7 @@ import uk.com.poodle.domain.Patient;
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -27,6 +28,23 @@ class PatientControllerIntegrationTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @TestWithData
+    void shouldRetrieveAllPatients() {
+        String urlTemplate = "/patients";
+        ResponseEntity<Patient[]> responseEntity = restTemplate.getForEntity(urlTemplate, Patient[].class);
+
+        Patient expected = Patient.builder()
+            .id("8674faf7-c2f8-4ba8-8aa8-11d95066610b")
+            .firstname("Joe")
+            .lastname("Bloggs")
+            .build();
+
+        assertEquals(OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+        assertEquals(1, responseEntity.getBody().length);
+        assertEquals(expected, responseEntity.getBody()[0]);
+    }
 
     @TestWithData
     void shouldRetrievePatient() {
