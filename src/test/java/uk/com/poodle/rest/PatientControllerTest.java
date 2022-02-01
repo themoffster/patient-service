@@ -16,8 +16,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.com.poodle.Constants.PATIENT_ID;
-import static uk.com.poodle.utils.FileUtils.fileToString;
 import static uk.com.poodle.domain.DomainDataFactory.buildNewPatient;
+import static uk.com.poodle.utils.FileUtils.fileToString;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(value = PatientController.class)

@@ -33,7 +33,7 @@ class PatientServiceTest {
 
         Optional<Patient> optional = service.getPatient(PATIENT_ID);
 
-        optional.ifPresentOrElse(patient -> assertEquals(buildNewPatient(), patient), Assertions::fail);;
+        optional.ifPresentOrElse(patient -> assertEquals(buildNewPatient(), patient), Assertions::fail);
     }
 
     @Test
