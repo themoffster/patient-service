@@ -16,15 +16,15 @@ spring:
       connection-test-query: select 1
       maximum-pool-size: 10
       minimum-idle: 1
-    url: jdbc:postgresql://localhost:5432/practice
-    username: patient_service_rw
-    password: patient_service_rw
+    url: jdbc:postgresql://TODO
+    username: TODO
+    password: TODO
   flyway:
-    baseline-on-migrate: true
+    baseline-on-migrate: false
     enabled: true
     url: ${spring.datasource.url}
-    user: patient_service_admin
-    password: patient_service_admin
+    user: TODO
+    password: TODO
   jackson:
     default-property-inclusion: NON_NULL
   jpa:
