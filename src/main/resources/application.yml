@@ -5,7 +5,7 @@ info:
     description: Service for storing and maintaining patient records.
 
 server:
-  port: 8081
+  port: 8082
 
 spring:
   application:

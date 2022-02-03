@@ -6,6 +6,6 @@ services:
     image: openjdk:11
     network_mode: host
     ports:
-      - 8081:8081
+      - 8082:8082
     volumes:
       - ./build/libs:/tmp/src
