@@ -2,12 +2,11 @@ plugins {
     id 'info.solidsoft.pitest' version '1.6.0'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
-    id 'java-gradle-plugin'
     id 'org.springframework.boot' version '2.6.3'
     id 'org.unbroken-dome.test-sets' version '4.0.0'
 }
 
-group = 'uk.com.poodle'
+group = 'com.harhay.poodle'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
@@ -16,7 +15,7 @@ repositories {
 }
 
 configurations {
-    all*.exclude group: 'ch.qos.logback', module: 'logback-classic'
+    all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
 }
 
 testSets {
@@ -31,6 +30,7 @@ dependencies {
     implementation 'org.projectlombok:lombok'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     runtimeOnly 'org.springdoc:springdoc-openapi-ui:1.6.5'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
