@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.com.poodle.domain.CreatePatientParams;
 import uk.com.poodle.domain.Patient;
-import uk.com.poodle.rest.domain.CreatePatientParams;
 import uk.com.poodle.service.PatientService;
 
 import javax.validation.Valid;

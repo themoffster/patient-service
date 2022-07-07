@@ -2,8 +2,8 @@ package uk.com.poodle.service;
 
 import lombok.experimental.UtilityClass;
 import uk.com.poodle.data.PatientEntity;
+import uk.com.poodle.domain.CreatePatientParams;
 import uk.com.poodle.domain.Patient;
-import uk.com.poodle.rest.domain.CreatePatientParams;
 
 @UtilityClass
 class PatientMapper {

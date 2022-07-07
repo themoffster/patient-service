@@ -1,7 +1,7 @@
 package uk.com.poodle.service;
 
 import org.junit.jupiter.api.Test;
-import uk.com.poodle.rest.domain.CreatePatientParams;
+import uk.com.poodle.domain.CreatePatientParams;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

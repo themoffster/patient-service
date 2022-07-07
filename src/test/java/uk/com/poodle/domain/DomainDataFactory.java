@@ -1,7 +1,5 @@
 package uk.com.poodle.domain;
 
-import uk.com.poodle.rest.domain.CreatePatientParams;
-
 import static uk.com.poodle.Constants.PATIENT_FIRSTNAME;
 import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.Constants.PATIENT_LASTNAME;
