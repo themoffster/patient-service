@@ -5,12 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.com.poodle.data.PatientRepository;
 import uk.com.poodle.domain.Patient;
+import uk.com.poodle.rest.domain.CreatePatientParams;
 
 import java.util.List;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
+import static uk.com.poodle.service.PatientMapper.map;
 
 @Slf4j
 @Service
@@ -34,5 +36,11 @@ public class PatientService {
                 log.warn("Patient {}, not found.", id);
                 return Optional.empty();
             });
+    }
+
+    public Patient createPatient(CreatePatientParams params) {
+        log.info("Creating patient {} {}.", params.getFirstname(), params.getLastname());
+        var entity = map(params);
+        return map(repository.save(entity));
     }
 }

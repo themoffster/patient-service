@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.data.EntityDataFactory.buildNewPatientEntity;
+import static uk.com.poodle.domain.DomainDataFactory.buildNewCreatePatientParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildNewPatient;
 
 @ExtendWith(MockitoExtension.class)
@@ -54,5 +55,17 @@ class PatientServiceTest {
         Optional<Patient> patientOptional = service.getPatient(PATIENT_ID);
 
         assertTrue(patientOptional.isEmpty());
+    }
+
+    @Test
+    void shouldCreatePatient() {
+        var expected = buildNewPatient();
+        var entity = buildNewPatientEntity();
+        var params = buildNewCreatePatientParams();
+        when(mockRepository.save(entity)).thenReturn(entity.withId(PATIENT_ID));
+
+        Patient actual = service.createPatient(params);
+
+        assertEquals(expected, actual);
     }
 }

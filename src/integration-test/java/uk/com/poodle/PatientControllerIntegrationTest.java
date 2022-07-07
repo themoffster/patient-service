@@ -1,6 +1,7 @@
 package uk.com.poodle;
 
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +18,11 @@ import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_E
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
+import static uk.com.poodle.Constants.PATIENT_FIRSTNAME;
+import static uk.com.poodle.Constants.PATIENT_LASTNAME;
+import static uk.com.poodle.domain.DomainDataFactory.buildNewCreatePatientParams;
 
 @AutoConfigureWireMock(port = 0)
 @ExtendWith(SpringExtension.class)
@@ -59,5 +64,17 @@ class PatientControllerIntegrationTest {
 
         assertEquals(OK, responseEntity.getStatusCode());
         assertEquals(expected, responseEntity.getBody());
+    }
+
+    @Test
+    void shouldCreatePatient() {
+        var payload = buildNewCreatePatientParams();
+        ResponseEntity<Patient> responseEntity = restTemplate.postForEntity("/patients/create", payload, Patient.class);
+
+        assertEquals(CREATED, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+        assertNotNull(responseEntity.getBody().getId());
+        assertEquals(PATIENT_FIRSTNAME, responseEntity.getBody().getFirstname());
+        assertEquals(PATIENT_LASTNAME, responseEntity.getBody().getLastname());
     }
 }
