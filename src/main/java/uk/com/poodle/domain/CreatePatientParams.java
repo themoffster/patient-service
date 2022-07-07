@@ -1,4 +1,4 @@
-package uk.com.poodle.rest.domain;
+package uk.com.poodle.domain;
 
 import lombok.Builder;
 import lombok.Value;
