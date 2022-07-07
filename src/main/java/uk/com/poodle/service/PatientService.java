@@ -41,6 +41,8 @@ public class PatientService {
     public Patient createPatient(CreatePatientParams params) {
         log.info("Creating patient {} {}.", params.getFirstname(), params.getLastname());
         var entity = map(params);
-        return map(repository.save(entity));
+        var savedEntity = repository.save(entity);
+        log.info("Created patient record {} for {} {}.", savedEntity.getId(), savedEntity.getFirstname(), savedEntity.getLastname());
+        return map(savedEntity);
     }
 }
