@@ -8,7 +8,7 @@ plugins {
     id 'se.patrikerdes.use-latest-versions' version '0.2.18'
 }
 
-group = 'com.harhay.poodle'
+group = 'uk.com.poodle'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 17
 
