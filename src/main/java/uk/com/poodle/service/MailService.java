@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import uk.com.poodle.config.ServiceConfig;
 
 import javax.mail.Message;
-import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 
 import static org.springframework.http.MediaType.TEXT_HTML;
@@ -24,7 +23,7 @@ class MailService {
     @SneakyThrows
     public void send(String toAddress, String subject, String htmlContent) {
         log.debug("Sending email to {}.", toAddress);
-        MimeMessage message = mailSender.createMimeMessage();
+        var message = mailSender.createMimeMessage();
         message.setFrom(serviceConfig.getMail().getFrom());
         message.setRecipients(Message.RecipientType.TO, toAddress);
         message.setSubject(subject);

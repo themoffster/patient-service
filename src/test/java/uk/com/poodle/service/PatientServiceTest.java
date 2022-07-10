@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.com.poodle.data.PatientRepository;
-import uk.com.poodle.domain.Patient;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +32,7 @@ class PatientServiceTest {
     void shouldRetrieveAllPatients() {
         when(mockRepository.findAll()).thenReturn(List.of(buildNewPatientEntity(PATIENT_ID)));
 
-        List<Patient> patients = service.getAllPatients();
+        var patients = service.getAllPatients();
 
         assertEquals(1, patients.size());
         assertEquals(buildNewPatient(), patients.get(0));
@@ -43,7 +42,7 @@ class PatientServiceTest {
     void shouldRetrievePatient() {
         when(mockRepository.findById(PATIENT_ID)).thenReturn(Optional.of(buildNewPatientEntity(PATIENT_ID)));
 
-        Optional<Patient> optional = service.getPatient(PATIENT_ID);
+        var optional = service.getPatient(PATIENT_ID);
 
         optional.ifPresentOrElse(patient -> assertEquals(buildNewPatient(), patient), Assertions::fail);
     }
@@ -52,7 +51,7 @@ class PatientServiceTest {
     void shouldReturnEmptyOptionalWhenUnableToRetrievePatient() {
         when(mockRepository.findById(PATIENT_ID)).thenReturn(Optional.empty());
 
-        Optional<Patient> patientOptional = service.getPatient(PATIENT_ID);
+        var patientOptional = service.getPatient(PATIENT_ID);
 
         assertTrue(patientOptional.isEmpty());
     }
@@ -64,7 +63,7 @@ class PatientServiceTest {
         var params = buildNewCreatePatientParams();
         when(mockRepository.save(entity)).thenReturn(entity.withId(PATIENT_ID));
 
-        Patient actual = service.createPatient(params);
+        var actual = service.createPatient(params);
 
         assertEquals(expected, actual);
     }

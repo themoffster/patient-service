@@ -3,7 +3,6 @@ package uk.com.poodle.service;
 import org.junit.jupiter.api.Test;
 import uk.com.poodle.domain.CreatePatientParams;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
@@ -20,7 +19,7 @@ class PatientMapperTest {
 
     @Test
     void classCanNotBeInstantiated() throws NoSuchMethodException {
-        Constructor<PatientMapper> constructor = PatientMapper.class.getDeclaredConstructor();
+        var constructor = PatientMapper.class.getDeclaredConstructor();
         assertTrue(Modifier.isPrivate(constructor.getModifiers()));
         constructor.setAccessible(true);
         assertThrows(InvocationTargetException.class, constructor::newInstance);

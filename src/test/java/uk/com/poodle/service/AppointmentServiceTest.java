@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.auditing.DateTimeProvider;
 import uk.com.poodle.data.AppointmentRepository;
-import uk.com.poodle.domain.Appointment;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +35,7 @@ class AppointmentServiceTest {
     void shouldRetrieveAllAppointments() {
         when(mockRepository.findAllByPatientId(PATIENT_ID)).thenReturn(List.of(buildNewAppointmentEntity(APPOINTMENT_ID)));
 
-        List<Appointment> patients = service.getAppointments(PATIENT_ID, true);
+        var patients = service.getAppointments(PATIENT_ID, true);
 
         assertEquals(1, patients.size());
         assertEquals(buildNewAppointment(), patients.get(0));
@@ -47,7 +46,7 @@ class AppointmentServiceTest {
         when(mockDateTimeProvider.getNow()).thenReturn(Optional.of(APPOINTMENT_DATE_TIME));
         when(mockRepository.findAllByPatientIdAndDateTimeGreaterThanEqual(PATIENT_ID, APPOINTMENT_DATE_TIME)).thenReturn(List.of(buildNewAppointmentEntity(APPOINTMENT_ID)));
 
-        List<Appointment> patients = service.getAppointments(PATIENT_ID, false);
+        var patients = service.getAppointments(PATIENT_ID, false);
 
         assertEquals(1, patients.size());
         assertEquals(buildNewAppointment(), patients.get(0));

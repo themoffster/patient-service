@@ -13,7 +13,7 @@ public class EmbeddedDatabaseTestConfig {
     @Bean
     Consumer<EmbeddedPostgres.Builder> overrideEmbeddedPostgresWorkingDirectoryConsumer() {
         return builder -> {
-            File workingDirectory = new File(System.getProperty("user.home") + "/tmp/embedded-pg");
+            var workingDirectory = new File(System.getProperty("user.home") + "/tmp/embedded-pg");
             builder.setOverrideWorkingDirectory(workingDirectory);
         };
     }

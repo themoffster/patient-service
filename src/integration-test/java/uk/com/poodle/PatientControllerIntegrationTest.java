@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.com.poodle.config.EmbeddedDatabaseTestConfig;
 import uk.com.poodle.domain.Patient;
@@ -37,10 +36,10 @@ class PatientControllerIntegrationTest {
 
     @TestWithData
     void shouldRetrieveAllPatients() {
-        String urlTemplate = "/patients";
-        ResponseEntity<Patient[]> responseEntity = restTemplate.getForEntity(urlTemplate, Patient[].class);
+        var urlTemplate = "/patients";
+        var responseEntity = restTemplate.getForEntity(urlTemplate, Patient[].class);
 
-        Patient expected = Patient.builder()
+        var expected = Patient.builder()
             .id(PATIENT_ID)
             .firstname("Joe")
             .lastname("Bloggs")
@@ -54,10 +53,10 @@ class PatientControllerIntegrationTest {
 
     @TestWithData
     void shouldRetrievePatient() {
-        String urlTemplate = "/patients/" + PATIENT_ID;
-        ResponseEntity<Patient> responseEntity = restTemplate.getForEntity(urlTemplate, Patient.class);
+        var urlTemplate = "/patients/" + PATIENT_ID;
+        var responseEntity = restTemplate.getForEntity(urlTemplate, Patient.class);
 
-        Patient expected = Patient.builder()
+        var expected = Patient.builder()
             .id(PATIENT_ID)
             .firstname(PATIENT_FIRSTNAME)
             .lastname(PATIENT_LASTNAME)
@@ -70,7 +69,7 @@ class PatientControllerIntegrationTest {
     @Test
     void shouldCreatePatient() {
         var payload = buildNewCreatePatientParams();
-        ResponseEntity<Patient> responseEntity = restTemplate.postForEntity("/patients/create", payload, Patient.class);
+        var responseEntity = restTemplate.postForEntity("/patients/create", payload, Patient.class);
 
         assertEquals(CREATED, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());

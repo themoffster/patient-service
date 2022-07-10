@@ -30,7 +30,7 @@ class MailServiceTest {
 
     @Test
     void shouldSendAnEMail() throws Exception {
-        MimeMessage message = new MimeMessage((Session) null);
+        var message = new MimeMessage((Session) null);
         when(mockMailSender.createMimeMessage()).thenReturn(message);
         when(mockServiceConfig.getMail().getFrom()).thenReturn("from@foo.com");
 
