@@ -12,5 +12,6 @@ public class Patient {
     String id;
     String firstname;
     String lastname;
+    ContactDetails contactDetails;
     List<Appointment> appointments;
 }

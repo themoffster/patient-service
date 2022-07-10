@@ -1,0 +1,60 @@
+package uk.com.poodle.service;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
+import org.springframework.data.auditing.DateTimeProvider;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import uk.com.poodle.data.AppointmentEntity;
+import uk.com.poodle.data.AppointmentRepository;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class AppointmentReminderService {
+
+    static final String SUBJECT = "Reminder of your SLT appointment.";
+
+    private final DateTimeProvider dateTimeProvider;
+    private final AppointmentRepository appointmentRepository;
+    private final MailService mailService;
+    private final PatientService patientService;
+
+    @Transactional
+    @Scheduled(cron = "${service.scheduler.appointment-reminder.cron}")
+    @SchedulerLock(
+        name = "${service.scheduler.appointment-reminder.lock-name}",
+        lockAtMostFor = "${service.scheduler.appointment-reminder.lock-for}")
+    public void remind() {
+        log.info("Running appointment reminder.");
+        var appointments = appointmentRepository.findAllByDateTimeAfter(getStartOfTomorrow());
+        appointments.forEach(this::sendReminder);
+    }
+
+    private LocalDateTime getStartOfTomorrow() {
+        return dateTimeProvider.getNow()
+            .map(LocalDateTime.class::cast)
+            .map(LocalDateTime::toLocalDate)
+            .map(localDate -> localDate.plusDays(1L))
+            .map(LocalDate::atStartOfDay)
+            .orElseThrow();
+    }
+
+    private void sendReminder(AppointmentEntity appointment) {
+        var patient = patientService.getPatient(appointment.getPatientId()).orElseThrow();
+        var emailAddress = patient.getContactDetails().getEmail();
+        log.info("Sending reminder email to {}.", emailAddress);
+        mailService.send(emailAddress, SUBJECT, buildEmailContent(appointment));
+    }
+
+    private String buildEmailContent(AppointmentEntity appointment) {
+        var appointmentTime = appointment.getDateTime();
+        return "Your appointment is at " + appointmentTime.format(DateTimeFormatter.ofPattern("hh:mm")) + ".";
+    }
+}

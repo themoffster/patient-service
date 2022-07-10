@@ -69,4 +69,15 @@ class AppointmentRepositoryTest {
         assertEquals(1, appointments.size());
         assertEquals(upcomingAppointmentEntity, appointments.get(0));
     }
+
+    @Test
+    void shouldFindAllByDateTimeAfter() {
+        var appointment = buildNewAppointmentEntity().withPatientId(patientId);
+        appointmentRepository.save(appointment);
+
+        var appointments = appointmentRepository.findAllByDateTimeAfter(APPOINTMENT_DATE_TIME.minusDays(1L));
+
+        assertEquals(1, appointments.size());
+        assertEquals(appointment, appointments.get(0));
+    }
 }

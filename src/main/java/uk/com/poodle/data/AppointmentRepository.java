@@ -12,4 +12,6 @@ public interface AppointmentRepository extends CrudRepository<AppointmentEntity,
     List<AppointmentEntity> findAllByPatientId(String id);
 
     List<AppointmentEntity> findAllByPatientIdAndDateTimeGreaterThanEqual(String id, LocalDateTime dateTime);
+
+    List<AppointmentEntity> findAllByDateTimeAfter(LocalDateTime dateTime);
 }
