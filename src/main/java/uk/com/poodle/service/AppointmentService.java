@@ -6,11 +6,13 @@ import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.stereotype.Service;
 import uk.com.poodle.data.AppointmentRepository;
 import uk.com.poodle.domain.Appointment;
+import uk.com.poodle.domain.CreateAppointmentParams;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static uk.com.poodle.service.AppointmentMapper.map;
 
 @Slf4j
 @Service
@@ -19,6 +21,16 @@ public class AppointmentService {
 
     private final AppointmentRepository repository;
     private final DateTimeProvider dateTimeProvider;
+    private final PatientService patientService;
+
+    public Appointment createAppointment(CreateAppointmentParams params) {
+        var patient = patientService.getPatient(params.getPatientId()).orElseThrow(() -> new IllegalArgumentException("Patient not found."));
+        log.info("Creating appointment for {}.", patient.getId());
+        var entity = map(params);
+        var savedEntity = repository.save(entity);
+        log.info("Created appointment on {} for {}.", params.getDateTime(), patient.getId());
+        return map(savedEntity);
+    }
 
     public List<Appointment> getAppointments(String id, boolean includeHistoric) {
         log.info("Retrieving appointments for patient {}.", id);

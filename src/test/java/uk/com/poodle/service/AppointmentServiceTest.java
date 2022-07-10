@@ -18,6 +18,8 @@ import static uk.com.poodle.Constants.APPOINTMENT_ID;
 import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.data.EntityDataFactory.buildNewAppointmentEntity;
 import static uk.com.poodle.domain.DomainDataFactory.buildNewAppointment;
+import static uk.com.poodle.domain.DomainDataFactory.buildNewCreateAppointmentParams;
+import static uk.com.poodle.domain.DomainDataFactory.buildNewPatient;
 
 @ExtendWith(MockitoExtension.class)
 class AppointmentServiceTest {
@@ -28,8 +30,24 @@ class AppointmentServiceTest {
     @Mock
     private DateTimeProvider mockDateTimeProvider;
 
+    @Mock
+    private PatientService mockPatientService;
+
     @InjectMocks
     private AppointmentService service;
+
+    @Test
+    void shouldCreateAppointment() {
+        var expected = buildNewAppointment();
+        var entity = buildNewAppointmentEntity();
+        var params = buildNewCreateAppointmentParams();
+        when(mockPatientService.getPatient(PATIENT_ID)).thenReturn(Optional.of(buildNewPatient()));
+        when(mockRepository.save(entity)).thenReturn(entity.withId(APPOINTMENT_ID));
+
+        var actual = service.createAppointment(params);
+
+        assertEquals(expected, actual);
+    }
 
     @Test
     void shouldRetrieveAllAppointments() {

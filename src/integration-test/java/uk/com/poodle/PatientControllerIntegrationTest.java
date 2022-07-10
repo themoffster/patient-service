@@ -34,6 +34,18 @@ class PatientControllerIntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Test
+    void shouldCreatePatient() {
+        var payload = buildNewCreatePatientParams();
+        var responseEntity = restTemplate.postForEntity("/patients/create", payload, Patient.class);
+
+        assertEquals(CREATED, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+        assertNotNull(responseEntity.getBody().getId());
+        assertEquals(PATIENT_FIRSTNAME, responseEntity.getBody().getFirstname());
+        assertEquals(PATIENT_LASTNAME, responseEntity.getBody().getLastname());
+    }
+
     @TestWithData
     void shouldRetrieveAllPatients() {
         var urlTemplate = "/patients";
@@ -64,17 +76,5 @@ class PatientControllerIntegrationTest {
 
         assertEquals(OK, responseEntity.getStatusCode());
         assertEquals(expected, responseEntity.getBody());
-    }
-
-    @Test
-    void shouldCreatePatient() {
-        var payload = buildNewCreatePatientParams();
-        var responseEntity = restTemplate.postForEntity("/patients/create", payload, Patient.class);
-
-        assertEquals(CREATED, responseEntity.getStatusCode());
-        assertNotNull(responseEntity.getBody());
-        assertNotNull(responseEntity.getBody().getId());
-        assertEquals(PATIENT_FIRSTNAME, responseEntity.getBody().getFirstname());
-        assertEquals(PATIENT_LASTNAME, responseEntity.getBody().getLastname());
     }
 }

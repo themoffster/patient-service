@@ -30,4 +30,11 @@ public class DomainDataFactory {
             .patientId(PATIENT_ID)
             .build();
     }
+
+    public static CreateAppointmentParams buildNewCreateAppointmentParams() {
+        return CreateAppointmentParams.builder()
+            .dateTime(APPOINTMENT_DATE_TIME)
+            .patientId(PATIENT_ID)
+            .build();
+    }
 }

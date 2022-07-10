@@ -14,6 +14,7 @@ import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.Constants.PATIENT_LASTNAME;
 import static uk.com.poodle.data.EntityDataFactory.buildNewPatientEntity;
 import static uk.com.poodle.domain.DomainDataFactory.buildNewPatient;
+import static uk.com.poodle.service.PatientMapper.map;
 
 class PatientMapperTest {
 
@@ -27,7 +28,7 @@ class PatientMapperTest {
 
     @Test
     void shouldMapPatientEntity() {
-        var patient = PatientMapper.map(buildNewPatientEntity(PATIENT_ID));
+        var patient = map(buildNewPatientEntity(PATIENT_ID));
         assertEquals(buildNewPatient(), patient);
     }
 
@@ -37,7 +38,7 @@ class PatientMapperTest {
             .firstname(PATIENT_FIRSTNAME)
             .lastname(PATIENT_LASTNAME)
             .build();
-        var patient = PatientMapper.map(params);
-        assertEquals(buildNewPatientEntity().withId(null), patient);
+        var patient = map(params);
+        assertEquals(buildNewPatientEntity(), patient);
     }
 }

@@ -28,6 +28,11 @@ public class PatientController {
 
     private final PatientService service;
 
+    @PostMapping("/create")
+    public ResponseEntity<Patient> createPatient(@RequestBody @Valid CreatePatientParams params) {
+        return ResponseEntity.status(CREATED).body(service.createPatient(params));
+    }
+
     @GetMapping
     public ResponseEntity<List<Patient>> getAllPatients() {
         return ok(service.getAllPatients());
@@ -38,10 +43,5 @@ public class PatientController {
         return service.getPatient(id)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
-    }
-
-    @PostMapping("/create")
-    public ResponseEntity<Patient> createPatient(@RequestBody @Valid CreatePatientParams params) {
-        return ResponseEntity.status(CREATED).body(service.createPatient(params));
     }
 }

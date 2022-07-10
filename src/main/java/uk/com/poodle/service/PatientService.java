@@ -21,6 +21,14 @@ public class PatientService {
 
     private final PatientRepository repository;
 
+    public Patient createPatient(CreatePatientParams params) {
+        log.info("Creating patient {} {}.", params.getFirstname(), params.getLastname());
+        var entity = map(params);
+        var savedEntity = repository.save(entity);
+        log.info("Created patient record {} for {} {}.", savedEntity.getId(), savedEntity.getFirstname(), savedEntity.getLastname());
+        return map(savedEntity);
+    }
+
     public List<Patient> getAllPatients() {
         log.info("Retrieving all patients.");
         return stream(repository.findAll().spliterator(), false)
@@ -36,13 +44,5 @@ public class PatientService {
                 log.warn("Patient {}, not found.", id);
                 return Optional.empty();
             });
-    }
-
-    public Patient createPatient(CreatePatientParams params) {
-        log.info("Creating patient {} {}.", params.getFirstname(), params.getLastname());
-        var entity = map(params);
-        var savedEntity = repository.save(entity);
-        log.info("Created patient record {} for {} {}.", savedEntity.getId(), savedEntity.getFirstname(), savedEntity.getLastname());
-        return map(savedEntity);
     }
 }

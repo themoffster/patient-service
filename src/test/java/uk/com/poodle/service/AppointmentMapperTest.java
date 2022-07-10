@@ -11,6 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.com.poodle.Constants.APPOINTMENT_ID;
 import static uk.com.poodle.data.EntityDataFactory.buildNewAppointmentEntity;
 import static uk.com.poodle.domain.DomainDataFactory.buildNewAppointment;
+import static uk.com.poodle.domain.DomainDataFactory.buildNewCreateAppointmentParams;
+import static uk.com.poodle.service.AppointmentMapper.map;
 
 class AppointmentMapperTest {
 
@@ -24,7 +26,13 @@ class AppointmentMapperTest {
 
     @Test
     void shouldMapAppointmentEntity() {
-        var appointment = AppointmentMapper.map(buildNewAppointmentEntity(APPOINTMENT_ID));
+        var appointment = map(buildNewAppointmentEntity(APPOINTMENT_ID));
         assertEquals(buildNewAppointment(), appointment);
+    }
+
+    @Test
+    void shouldMapCreateAppointmentParams() {
+        var appointment = map(buildNewCreateAppointmentParams());
+        assertEquals(buildNewAppointmentEntity(), appointment);
     }
 }

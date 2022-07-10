@@ -29,6 +29,18 @@ class PatientServiceTest {
     private PatientService service;
 
     @Test
+    void shouldCreatePatient() {
+        var expected = buildNewPatient();
+        var entity = buildNewPatientEntity();
+        var params = buildNewCreatePatientParams();
+        when(mockRepository.save(entity)).thenReturn(entity.withId(PATIENT_ID));
+
+        var actual = service.createPatient(params);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void shouldRetrieveAllPatients() {
         when(mockRepository.findAll()).thenReturn(List.of(buildNewPatientEntity(PATIENT_ID)));
 
@@ -54,17 +66,5 @@ class PatientServiceTest {
         var patientOptional = service.getPatient(PATIENT_ID);
 
         assertTrue(patientOptional.isEmpty());
-    }
-
-    @Test
-    void shouldCreatePatient() {
-        var expected = buildNewPatient();
-        var entity = buildNewPatientEntity();
-        var params = buildNewCreatePatientParams();
-        when(mockRepository.save(entity)).thenReturn(entity.withId(PATIENT_ID));
-
-        var actual = service.createPatient(params);
-
-        assertEquals(expected, actual);
     }
 }

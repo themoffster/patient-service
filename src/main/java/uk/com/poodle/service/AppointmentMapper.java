@@ -3,6 +3,7 @@ package uk.com.poodle.service;
 import lombok.experimental.UtilityClass;
 import uk.com.poodle.data.AppointmentEntity;
 import uk.com.poodle.domain.Appointment;
+import uk.com.poodle.domain.CreateAppointmentParams;
 
 @UtilityClass
 class AppointmentMapper {
@@ -12,6 +13,13 @@ class AppointmentMapper {
             .id(entity.getId())
             .dateTime(entity.getDateTime())
             .patientId(entity.getPatientId())
+            .build();
+    }
+
+    public static AppointmentEntity map(CreateAppointmentParams params) {
+        return AppointmentEntity.builder()
+            .dateTime(params.getDateTime())
+            .patientId(params.getPatientId())
             .build();
     }
 }

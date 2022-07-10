@@ -21,10 +21,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static uk.com.poodle.Constants.APPOINTMENT_DATE_TIME;
 import static uk.com.poodle.Constants.APPOINTMENT_ID;
 import static uk.com.poodle.Constants.PATIENT_ID;
+import static uk.com.poodle.domain.DomainDataFactory.buildNewCreateAppointmentParams;
 
 @AutoConfigureWireMock(port = 0)
 @ExtendWith(SpringExtension.class)
@@ -35,6 +37,18 @@ class AppointmentControllerIntegrationTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @TestWithData
+    void shouldCreateAppointment() {
+        var payload = buildNewCreateAppointmentParams();
+        var responseEntity = restTemplate.postForEntity("/appointments/create", payload, Appointment.class);
+
+        assertEquals(CREATED, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+        assertNotNull(responseEntity.getBody().getId());
+        assertEquals(APPOINTMENT_DATE_TIME, responseEntity.getBody().getDateTime());
+        assertEquals(PATIENT_ID, responseEntity.getBody().getPatientId());
+    }
 
     @TestWithData
     void shouldRetrieveAllAppointmentsForPatient() {
