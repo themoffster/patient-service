@@ -16,19 +16,19 @@ import static com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_
 class ArchitectureTest {
 
     private static final Architectures.LayeredArchitecture LAYERED_ARCHITECTURE_SHOULD_BE_RESPECTED =
-            layeredArchitecture()
-                    .layer("Web")
-                    .definedBy("uk.com.poodle.rest..")
-                    .layer("Service")
-                    .definedBy("uk.com.poodle.service..")
-                    .layer("Repository")
-                    .definedBy("uk.com.poodle.data..")
-                    .whereLayer("Web")
-                    .mayNotBeAccessedByAnyLayer()
-                    .whereLayer("Service")
-                    .mayOnlyBeAccessedByLayers("Web")
-                    .whereLayer("Repository")
-                    .mayOnlyBeAccessedByLayers("Service");
+        layeredArchitecture()
+            .layer("Web")
+            .definedBy("uk.com.poodle.rest..")
+            .layer("Service")
+            .definedBy("uk.com.poodle.service..")
+            .layer("Repository")
+            .definedBy("uk.com.poodle.data..")
+            .whereLayer("Web")
+            .mayNotBeAccessedByAnyLayer()
+            .whereLayer("Service")
+            .mayOnlyBeAccessedByLayers("Web")
+            .whereLayer("Repository")
+            .mayOnlyBeAccessedByLayers("Service");
 
     @ArchTest
     void layeredArchitectureShouldBeRespected(JavaClasses classes) {

@@ -102,10 +102,10 @@ class PatientControllerTest {
                 .build()),
             Arguments.of(CreatePatientParams.builder()
                 .firstname(PATIENT_FIRSTNAME)
-                    .lastname("")
+                .lastname("")
                 .build()),
             Arguments.of(CreatePatientParams.builder()
-                    .firstname("")
+                .firstname("")
                 .lastname(PATIENT_LASTNAME)
                 .build()),
             Arguments.of(CreatePatientParams.builder()

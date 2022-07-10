@@ -1,5 +1,7 @@
 package uk.com.poodle.domain;
 
+import static uk.com.poodle.Constants.APPOINTMENT_DATE_TIME;
+import static uk.com.poodle.Constants.APPOINTMENT_ID;
 import static uk.com.poodle.Constants.PATIENT_FIRSTNAME;
 import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.Constants.PATIENT_LASTNAME;
@@ -18,6 +20,14 @@ public class DomainDataFactory {
         return CreatePatientParams.builder()
             .firstname(PATIENT_FIRSTNAME)
             .lastname(PATIENT_LASTNAME)
+            .build();
+    }
+
+    public static Appointment buildNewAppointment() {
+        return Appointment.builder()
+            .id(APPOINTMENT_ID)
+            .dateTime(APPOINTMENT_DATE_TIME)
+            .patientId(PATIENT_ID)
             .build();
     }
 }

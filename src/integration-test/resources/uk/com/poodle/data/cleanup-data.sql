@@ -1,1 +1,4 @@
-delete from patient;
+delete
+from patient;
+delete
+from appointment;

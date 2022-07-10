@@ -12,12 +12,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.List;
-
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.LAZY;
+import java.time.LocalDateTime;
 
 @With
 @Entity
@@ -26,8 +22,8 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@Table(name = "patient")
-public class PatientEntity {
+@Table(name = "appointment")
+public class AppointmentEntity {
 
     @Id
     @Column(name = "id")
@@ -35,13 +31,10 @@ public class PatientEntity {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-    @Column(name = "firstname")
-    private String firstname;
+    @Column(name = "patient_id")
+    private String patientId;
 
-    @Column(name = "lastname")
-    private String lastname;
-
-    @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "patientId", orphanRemoval = true)
-    private List<AppointmentEntity> appointments;
+    @Column(name = "datetime")
+    private LocalDateTime dateTime;
 
 }

@@ -21,6 +21,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static uk.com.poodle.Constants.PATIENT_FIRSTNAME;
+import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.Constants.PATIENT_LASTNAME;
 import static uk.com.poodle.domain.DomainDataFactory.buildNewCreatePatientParams;
 
@@ -40,7 +41,7 @@ class PatientControllerIntegrationTest {
         ResponseEntity<Patient[]> responseEntity = restTemplate.getForEntity(urlTemplate, Patient[].class);
 
         Patient expected = Patient.builder()
-            .id("8674faf7-c2f8-4ba8-8aa8-11d95066610b")
+            .id(PATIENT_ID)
             .firstname("Joe")
             .lastname("Bloggs")
             .build();
@@ -53,13 +54,13 @@ class PatientControllerIntegrationTest {
 
     @TestWithData
     void shouldRetrievePatient() {
-        String urlTemplate = "/patients/8674faf7-c2f8-4ba8-8aa8-11d95066610b";
+        String urlTemplate = "/patients/" + PATIENT_ID;
         ResponseEntity<Patient> responseEntity = restTemplate.getForEntity(urlTemplate, Patient.class);
 
         Patient expected = Patient.builder()
-            .id("8674faf7-c2f8-4ba8-8aa8-11d95066610b")
-            .firstname("Joe")
-            .lastname("Bloggs")
+            .id(PATIENT_ID)
+            .firstname(PATIENT_FIRSTNAME)
+            .lastname(PATIENT_LASTNAME)
             .build();
 
         assertEquals(OK, responseEntity.getStatusCode());
