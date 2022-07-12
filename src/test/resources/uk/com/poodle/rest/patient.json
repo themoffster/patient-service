@@ -1,5 +1,7 @@
 {
   "id": "67150f64-b235-4e07-af6b-4018aabc1e3e",
+  "dob": "2010-01-01",
   "firstname": "Joe",
-  "lastname": "Bloggs"
+  "lastname": "Bloggs",
+  "sex": "MALE"
 }

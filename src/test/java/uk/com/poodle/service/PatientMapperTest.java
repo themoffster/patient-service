@@ -1,7 +1,7 @@
 package uk.com.poodle.service;
 
 import org.junit.jupiter.api.Test;
-import uk.com.poodle.domain.CreatePatientParams;
+import uk.com.poodle.data.EntityDataFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -9,11 +9,10 @@ import java.lang.reflect.Modifier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.com.poodle.Constants.PATIENT_FIRSTNAME;
 import static uk.com.poodle.Constants.PATIENT_ID;
-import static uk.com.poodle.Constants.PATIENT_LASTNAME;
-import static uk.com.poodle.data.EntityDataFactory.buildNewPatientEntity;
-import static uk.com.poodle.domain.DomainDataFactory.buildNewPatient;
+import static uk.com.poodle.data.EntityDataFactory.buildPatientEntity;
+import static uk.com.poodle.domain.DomainDataFactory.buildCreatePatientParams;
+import static uk.com.poodle.domain.DomainDataFactory.buildPatient;
 import static uk.com.poodle.service.PatientMapper.map;
 
 class PatientMapperTest {
@@ -28,17 +27,13 @@ class PatientMapperTest {
 
     @Test
     void shouldMapPatientEntity() {
-        var patient = map(buildNewPatientEntity(PATIENT_ID));
-        assertEquals(buildNewPatient(), patient);
+        var patient = map(buildPatientEntity(PATIENT_ID));
+        assertEquals(buildPatient(), patient);
     }
 
     @Test
     void shouldMapCreatePatientParams() {
-        var params = CreatePatientParams.builder()
-            .firstname(PATIENT_FIRSTNAME)
-            .lastname(PATIENT_LASTNAME)
-            .build();
-        var patient = map(params);
-        assertEquals(buildNewPatientEntity(), patient);
+        var patient = map(buildCreatePatientParams());
+        assertEquals(EntityDataFactory.buildPatientEntity(), patient);
     }
 }

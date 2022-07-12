@@ -12,13 +12,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
-import java.util.List;
-
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.LAZY;
 
 @With
 @Entity
@@ -27,8 +24,8 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@Table(name = "patient")
-public class PatientEntity {
+@Table(name = "guardian")
+public class GuardianEntity {
 
     @Id
     @Column(name = "id")
@@ -36,22 +33,23 @@ public class PatientEntity {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-    @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "patientId", orphanRemoval = true)
-    private List<AppointmentEntity> appointments;
-
     @Column(name = "dob")
     private LocalDate dob;
 
     @Column(name = "firstname")
     private String firstname;
 
-    @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "patientId", orphanRemoval = true)
-    private List<GuardianEntity> guardians;
-
     @Column(name = "lastname")
     private String lastname;
 
+    @Column(name = "patient_id")
+    private String patientId;
+
     @Column(name = "sex")
     private String sex;
+
+    @OneToOne
+    @JoinColumn(name = "relation_id")
+    private RelationEntity relation;
 
 }

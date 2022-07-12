@@ -25,8 +25,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.com.poodle.Constants.PATIENT_ID;
-import static uk.com.poodle.domain.DomainDataFactory.buildNewAppointment;
-import static uk.com.poodle.domain.DomainDataFactory.buildNewCreateAppointmentParams;
+import static uk.com.poodle.domain.DomainDataFactory.buildAppointment;
+import static uk.com.poodle.domain.DomainDataFactory.buildCreateAppointmentParams;
 import static uk.com.poodle.utils.FileUtils.fileToString;
 
 @ExtendWith(SpringExtension.class)
@@ -41,7 +41,7 @@ class AppointmentControllerTest {
 
     @Test
     void shouldRetrieveAllAppointmentsForPatients() throws Exception {
-        when(mockService.getAppointments(PATIENT_ID, true)).thenReturn(List.of(buildNewAppointment()));
+        when(mockService.getAppointments(PATIENT_ID, true)).thenReturn(List.of(buildAppointment()));
 
         mvc.perform(get("/appointments/" + PATIENT_ID)
                 .param("includeHistoric", "true"))
@@ -51,7 +51,7 @@ class AppointmentControllerTest {
 
     @Test
     void shouldRetrieveAllUpcomingAppointmentsForPatients() throws Exception {
-        when(mockService.getAppointments(PATIENT_ID, false)).thenReturn(List.of(buildNewAppointment()));
+        when(mockService.getAppointments(PATIENT_ID, false)).thenReturn(List.of(buildAppointment()));
 
         mvc.perform(get("/appointments/" + PATIENT_ID))
             .andExpect(status().isOk())
@@ -60,7 +60,7 @@ class AppointmentControllerTest {
 
     @Test
     void shouldCreateAppointment() throws Exception {
-        when(mockService.createAppointment(buildNewCreateAppointmentParams())).thenReturn(buildNewAppointment());
+        when(mockService.createAppointment(buildCreateAppointmentParams())).thenReturn(buildAppointment());
 
         mvc.perform(post("/appointments/create")
                 .contentType(APPLICATION_JSON)

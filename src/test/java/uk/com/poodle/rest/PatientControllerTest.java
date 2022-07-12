@@ -25,11 +25,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.com.poodle.Constants.PATIENT_DOB;
 import static uk.com.poodle.Constants.PATIENT_FIRSTNAME;
 import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.Constants.PATIENT_LASTNAME;
-import static uk.com.poodle.domain.DomainDataFactory.buildNewCreatePatientParams;
-import static uk.com.poodle.domain.DomainDataFactory.buildNewPatient;
+import static uk.com.poodle.Constants.PATIENT_SEX;
+import static uk.com.poodle.domain.DomainDataFactory.buildCreatePatientParams;
+import static uk.com.poodle.domain.DomainDataFactory.buildPatient;
 import static uk.com.poodle.utils.FileUtils.fileToString;
 
 @ExtendWith(SpringExtension.class)
@@ -39,12 +41,15 @@ class PatientControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private ObjectMapper mapper;
+
     @MockBean
     private PatientService mockService;
 
     @Test
     void shouldRetrieveAllPatients() throws Exception {
-        when(mockService.getAllPatients()).thenReturn(List.of(buildNewPatient()));
+        when(mockService.getAllPatients()).thenReturn(List.of(buildPatient()));
 
         mvc.perform(get("/patients/"))
             .andExpect(status().isOk())
@@ -53,7 +58,7 @@ class PatientControllerTest {
 
     @Test
     void shouldRetrievePatient() throws Exception {
-        when(mockService.getPatient(PATIENT_ID)).thenReturn(Optional.of(buildNewPatient()));
+        when(mockService.getPatient(PATIENT_ID)).thenReturn(Optional.of(buildPatient()));
 
         mvc.perform(get("/patients/" + PATIENT_ID))
             .andExpect(status().isOk())
@@ -70,7 +75,7 @@ class PatientControllerTest {
 
     @Test
     void shouldCreatePatient() throws Exception {
-        when(mockService.createPatient(buildNewCreatePatientParams())).thenReturn(buildNewPatient());
+        when(mockService.createPatient(buildCreatePatientParams())).thenReturn(buildPatient());
 
         mvc.perform(post("/patients/create")
                 .contentType(APPLICATION_JSON)
@@ -83,7 +88,7 @@ class PatientControllerTest {
     @ParameterizedTest
     @MethodSource("invalidCreatePatientParams")
     void shouldReturnBadRequestWhenCreatePatientParamsAreInvalid(CreatePatientParams params) throws Exception {
-        var json = new ObjectMapper().writeValueAsString(params);
+        var json = mapper.writeValueAsString(params);
 
         mvc.perform(post("/patients/create")
                 .contentType(APPLICATION_JSON)
@@ -94,28 +99,23 @@ class PatientControllerTest {
     private static Stream<Arguments> invalidCreatePatientParams() {
         return Stream.of(
             Arguments.of(CreatePatientParams.builder().build()),
-            Arguments.of(CreatePatientParams.builder()
-                .firstname(PATIENT_FIRSTNAME)
-                .build()),
-            Arguments.of(CreatePatientParams.builder()
-                .lastname(PATIENT_LASTNAME)
-                .build()),
-            Arguments.of(CreatePatientParams.builder()
-                .firstname(PATIENT_FIRSTNAME)
-                .lastname("")
-                .build()),
-            Arguments.of(CreatePatientParams.builder()
-                .firstname("")
-                .lastname(PATIENT_LASTNAME)
-                .build()),
-            Arguments.of(CreatePatientParams.builder()
-                .firstname(PATIENT_FIRSTNAME)
-                .lastname("  ")
-                .build()),
-            Arguments.of(CreatePatientParams.builder()
-                .firstname("  ")
-                .lastname(PATIENT_LASTNAME)
-                .build())
+            Arguments.of(buildValidCreatePatientParams().withFirstname(null)),
+            Arguments.of(buildValidCreatePatientParams().withFirstname("")),
+            Arguments.of(buildValidCreatePatientParams().withFirstname(" ")),
+            Arguments.of(buildValidCreatePatientParams().withLastname(null)),
+            Arguments.of(buildValidCreatePatientParams().withLastname("")),
+            Arguments.of(buildValidCreatePatientParams().withLastname(" ")),
+            Arguments.of(buildValidCreatePatientParams().withDob(null)),
+            Arguments.of(buildValidCreatePatientParams().withSex(null))
         );
+    }
+
+    private static CreatePatientParams buildValidCreatePatientParams() {
+        return CreatePatientParams.builder()
+            .dob(PATIENT_DOB)
+            .firstname(PATIENT_FIRSTNAME)
+            .lastname(PATIENT_LASTNAME)
+            .sex(PATIENT_SEX)
+            .build();
     }
 }

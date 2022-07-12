@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import uk.com.poodle.data.EntityDataFactory;
 import uk.com.poodle.data.PatientRepository;
 
 import java.util.List;
@@ -15,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.com.poodle.Constants.PATIENT_ID;
-import static uk.com.poodle.data.EntityDataFactory.buildNewPatientEntity;
-import static uk.com.poodle.domain.DomainDataFactory.buildNewCreatePatientParams;
-import static uk.com.poodle.domain.DomainDataFactory.buildNewPatient;
+import static uk.com.poodle.data.EntityDataFactory.buildPatientEntity;
+import static uk.com.poodle.domain.DomainDataFactory.buildCreatePatientParams;
+import static uk.com.poodle.domain.DomainDataFactory.buildPatient;
 
 @ExtendWith(MockitoExtension.class)
 class PatientServiceTest {
@@ -30,9 +31,9 @@ class PatientServiceTest {
 
     @Test
     void shouldCreatePatient() {
-        var expected = buildNewPatient();
-        var entity = buildNewPatientEntity();
-        var params = buildNewCreatePatientParams();
+        var expected = buildPatient();
+        var entity = EntityDataFactory.buildPatientEntity();
+        var params = buildCreatePatientParams();
         when(mockRepository.save(entity)).thenReturn(entity.withId(PATIENT_ID));
 
         var actual = service.createPatient(params);
@@ -42,21 +43,21 @@ class PatientServiceTest {
 
     @Test
     void shouldRetrieveAllPatients() {
-        when(mockRepository.findAll()).thenReturn(List.of(buildNewPatientEntity(PATIENT_ID)));
+        when(mockRepository.findAll()).thenReturn(List.of(buildPatientEntity(PATIENT_ID)));
 
         var patients = service.getAllPatients();
 
         assertEquals(1, patients.size());
-        assertEquals(buildNewPatient(), patients.get(0));
+        assertEquals(buildPatient(), patients.get(0));
     }
 
     @Test
     void shouldRetrievePatient() {
-        when(mockRepository.findById(PATIENT_ID)).thenReturn(Optional.of(buildNewPatientEntity(PATIENT_ID)));
+        when(mockRepository.findById(PATIENT_ID)).thenReturn(Optional.of(buildPatientEntity(PATIENT_ID)));
 
         var optional = service.getPatient(PATIENT_ID);
 
-        optional.ifPresentOrElse(patient -> assertEquals(buildNewPatient(), patient), Assertions::fail);
+        optional.ifPresentOrElse(patient -> assertEquals(buildPatient(), patient), Assertions::fail);
     }
 
     @Test

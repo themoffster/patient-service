@@ -10,7 +10,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.com.poodle.data.EntityDataFactory.buildNewPatientEntity;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
@@ -22,7 +21,7 @@ class PatientRepositoryTest {
 
     @Test
     void shouldFindByPatientId() {
-        var entity = buildNewPatientEntity();
+        var entity = EntityDataFactory.buildPatientEntity();
         repository.save(entity);
 
         var actual = repository.findById(entity.getId());

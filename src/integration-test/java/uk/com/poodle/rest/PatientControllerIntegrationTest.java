@@ -1,8 +1,15 @@
-package uk.com.poodle;
+package uk.com.poodle.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
+import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.skyscreamer.jsonassert.Customization;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -19,10 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
-import static uk.com.poodle.Constants.PATIENT_FIRSTNAME;
 import static uk.com.poodle.Constants.PATIENT_ID;
-import static uk.com.poodle.Constants.PATIENT_LASTNAME;
-import static uk.com.poodle.domain.DomainDataFactory.buildNewCreatePatientParams;
+import static uk.com.poodle.domain.DomainDataFactory.buildCreatePatientParams;
+import static uk.com.poodle.domain.DomainDataFactory.buildPatient;
 
 @AutoConfigureWireMock(port = 0)
 @ExtendWith(SpringExtension.class)
@@ -34,16 +40,23 @@ class PatientControllerIntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private ObjectMapper mapper;
+
     @Test
-    void shouldCreatePatient() {
-        var payload = buildNewCreatePatientParams();
+    void shouldCreatePatient() throws JsonProcessingException, JSONException {
+        var payload = buildCreatePatientParams();
         var responseEntity = restTemplate.postForEntity("/patients/create", payload, Patient.class);
 
         assertEquals(CREATED, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
         assertNotNull(responseEntity.getBody().getId());
-        assertEquals(PATIENT_FIRSTNAME, responseEntity.getBody().getFirstname());
-        assertEquals(PATIENT_LASTNAME, responseEntity.getBody().getLastname());
+        JSONAssert.assertEquals(
+            mapper.writeValueAsString(buildPatient()),
+            mapper.writeValueAsString(responseEntity.getBody()),
+            new CustomComparator(
+                JSONCompareMode.STRICT,
+                new Customization("id", (o1, o2) -> true)));
     }
 
     @TestWithData
@@ -51,16 +64,10 @@ class PatientControllerIntegrationTest {
         var urlTemplate = "/patients";
         var responseEntity = restTemplate.getForEntity(urlTemplate, Patient[].class);
 
-        var expected = Patient.builder()
-            .id(PATIENT_ID)
-            .firstname("Joe")
-            .lastname("Bloggs")
-            .build();
-
         assertEquals(OK, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
         assertEquals(1, responseEntity.getBody().length);
-        assertEquals(expected, responseEntity.getBody()[0]);
+        assertEquals(buildPatient(), responseEntity.getBody()[0]);
     }
 
     @TestWithData
@@ -68,13 +75,7 @@ class PatientControllerIntegrationTest {
         var urlTemplate = "/patients/" + PATIENT_ID;
         var responseEntity = restTemplate.getForEntity(urlTemplate, Patient.class);
 
-        var expected = Patient.builder()
-            .id(PATIENT_ID)
-            .firstname(PATIENT_FIRSTNAME)
-            .lastname(PATIENT_LASTNAME)
-            .build();
-
         assertEquals(OK, responseEntity.getStatusCode());
-        assertEquals(expected, responseEntity.getBody());
+        assertEquals(buildPatient(), responseEntity.getBody());
     }
 }

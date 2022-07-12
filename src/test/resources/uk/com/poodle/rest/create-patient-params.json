@@ -1,4 +1,6 @@
 {
+  "dob": "2010-01-01",
   "firstname": "Joe",
-  "lastname": "Bloggs"
+  "lastname": "Bloggs",
+  "sex": "MALE"
 }

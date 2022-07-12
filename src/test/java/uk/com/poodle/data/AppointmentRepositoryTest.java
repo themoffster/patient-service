@@ -19,8 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.com.poodle.Constants.APPOINTMENT_DATE_TIME;
-import static uk.com.poodle.data.EntityDataFactory.buildNewAppointmentEntity;
-import static uk.com.poodle.data.EntityDataFactory.buildNewPatientEntity;
+import static uk.com.poodle.data.EntityDataFactory.buildAppointmentEntity;
+import static uk.com.poodle.data.EntityDataFactory.buildPatientEntity;
+import static uk.com.poodle.data.EntityDataFactory.buildRelationEntity;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
@@ -33,20 +34,32 @@ class AppointmentRepositoryTest {
     @Autowired
     private PatientRepository patientRepository;
 
+    @Autowired
+    private RelationRepository relationRepository;
+
     @Mock
     private DateTimeProvider mockDateTimeProvider;
 
     private String patientId;
 
     @BeforeEach
+    void setup() {
+        insertRelation();
+        insertPatient();
+    }
+
     void insertPatient() {
-        var savedPatient = patientRepository.save(buildNewPatientEntity());
+        var savedPatient = patientRepository.save(buildPatientEntity());
         patientId = savedPatient.getId();
+    }
+
+    void insertRelation() {
+        relationRepository.save(buildRelationEntity());
     }
 
     @Test
     void shouldFindAllAppointmentsByPatientId() {
-        var entity = buildNewAppointmentEntity().withPatientId(patientId);
+        var entity = buildAppointmentEntity().withPatientId(patientId);
         appointmentRepository.save(entity);
 
         var appointments = appointmentRepository.findAllByPatientId(patientId);
@@ -57,10 +70,10 @@ class AppointmentRepositoryTest {
 
     @Test
     void shouldFindAllUpcomingAppointmentsByPatientId() {
-        var historicAppointmentEntity = buildNewAppointmentEntity().withPatientId(patientId).toBuilder()
+        var historicAppointmentEntity = buildAppointmentEntity().withPatientId(patientId).toBuilder()
             .dateTime(LocalDateTime.of(2022, 1, 1, 9, 0))
             .build();
-        var upcomingAppointmentEntity = buildNewAppointmentEntity().withPatientId(patientId);
+        var upcomingAppointmentEntity = buildAppointmentEntity().withPatientId(patientId);
         appointmentRepository.saveAll(List.of(historicAppointmentEntity, upcomingAppointmentEntity));
         when(mockDateTimeProvider.getNow()).thenReturn(Optional.of(APPOINTMENT_DATE_TIME));
 
@@ -72,7 +85,7 @@ class AppointmentRepositoryTest {
 
     @Test
     void shouldFindAllByDateTimeAfter() {
-        var appointment = buildNewAppointmentEntity().withPatientId(patientId);
+        var appointment = buildAppointmentEntity().withPatientId(patientId);
         appointmentRepository.save(appointment);
 
         var appointments = appointmentRepository.findAllByDateTimeAfter(APPOINTMENT_DATE_TIME.minusDays(1L));

@@ -1,4 +1,4 @@
-package uk.com.poodle;
+package uk.com.poodle.rest;
 
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +26,7 @@ import static org.springframework.http.HttpStatus.OK;
 import static uk.com.poodle.Constants.APPOINTMENT_DATE_TIME;
 import static uk.com.poodle.Constants.APPOINTMENT_ID;
 import static uk.com.poodle.Constants.PATIENT_ID;
-import static uk.com.poodle.domain.DomainDataFactory.buildNewCreateAppointmentParams;
+import static uk.com.poodle.domain.DomainDataFactory.buildCreateAppointmentParams;
 
 @AutoConfigureWireMock(port = 0)
 @ExtendWith(SpringExtension.class)
@@ -40,7 +40,7 @@ class AppointmentControllerIntegrationTest {
 
     @TestWithData
     void shouldCreateAppointment() {
-        var payload = buildNewCreateAppointmentParams();
+        var payload = buildCreateAppointmentParams();
         var responseEntity = restTemplate.postForEntity("/appointments/create", payload, Appointment.class);
 
         assertEquals(CREATED, responseEntity.getStatusCode());
