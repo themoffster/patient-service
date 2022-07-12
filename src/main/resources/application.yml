@@ -4,6 +4,10 @@ info:
     title: Patient Service
     description: Service for storing and maintaining patient records.
 
+logging:
+  level:
+    uk.com.poodle: DEBUG
+
 server:
   port: 8082
 
