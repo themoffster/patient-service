@@ -8,3 +8,14 @@ spring:
     baseline-on-migrate: true
     user: patient_service_admin
     password: patient_service_admin
+
+# Profile for debugging hibernate
+---
+spring.config.activate.on-profile: debug-hibernate
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.cache: debug
+    org.hibernate.search: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
