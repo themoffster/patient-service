@@ -26,7 +26,9 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static uk.com.poodle.Constants.APPOINTMENT_DATE_TIME;
 import static uk.com.poodle.Constants.APPOINTMENT_ID;
+import static uk.com.poodle.Constants.APPOINTMENT_NOTES;
 import static uk.com.poodle.Constants.PATIENT_ID;
+import static uk.com.poodle.domain.DomainDataFactory.buildAddAppointmentNotesParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddAppointmentParams;
 
 @AutoConfigureWireMock(port = 0)
@@ -49,6 +51,28 @@ class AppointmentControllerIntegrationTest {
         assertNotNull(responseEntity.getBody().getId());
         assertEquals(APPOINTMENT_DATE_TIME, responseEntity.getBody().getDateTime());
         assertEquals(PATIENT_ID, responseEntity.getBody().getPatientId());
+    }
+
+    @TestWithData
+    void shouldAddAppointmentNotes() {
+        var urlTemplate = "/patients/{patientId}/appointments/{appointmentId}/notes/add";
+        var payload = buildAddAppointmentNotesParams();
+        var urlParams = Map.of(
+            "patientId", PATIENT_ID,
+            "appointmentId", APPOINTMENT_ID
+        );
+        var responseEntity = restTemplate.postForEntity(urlTemplate, payload, Appointment.class, urlParams);
+
+        var expected = Appointment.builder()
+            .id(APPOINTMENT_ID)
+            .dateTime(APPOINTMENT_DATE_TIME)
+            .notes(APPOINTMENT_NOTES)
+            .patientId(PATIENT_ID)
+            .build();
+
+        assertEquals(CREATED, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+        assertEquals(expected, responseEntity.getBody());
     }
 
     @TestWithData

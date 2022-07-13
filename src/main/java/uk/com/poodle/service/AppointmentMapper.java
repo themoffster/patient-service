@@ -12,6 +12,7 @@ class AppointmentMapper {
         return Appointment.builder()
             .id(entity.getId())
             .dateTime(entity.getDateTime())
+            .notes(entity.getNotes())
             .patientId(entity.getPatientId())
             .build();
     }

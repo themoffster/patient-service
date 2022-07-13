@@ -7,19 +7,23 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.auditing.DateTimeProvider;
 import uk.com.poodle.data.AppointmentRepository;
-import uk.com.poodle.data.EntityDataFactory;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.com.poodle.Constants.APPOINTMENT_DATE_TIME;
 import static uk.com.poodle.Constants.APPOINTMENT_ID;
+import static uk.com.poodle.Constants.APPOINTMENT_NOTES;
 import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.data.EntityDataFactory.buildAppointmentEntity;
+import static uk.com.poodle.domain.DomainDataFactory.buildAddAppointmentNotesParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddAppointmentParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildAppointment;
 import static uk.com.poodle.domain.DomainDataFactory.buildPatient;
@@ -42,7 +46,7 @@ class AppointmentServiceTest {
     @Test
     void shouldAddAppointment() {
         var expected = buildAppointment();
-        var entity = EntityDataFactory.buildAppointmentEntity();
+        var entity = buildAppointmentEntity();
         var params = buildAddAppointmentParams();
         when(mockPatientService.getPatient(PATIENT_ID)).thenReturn(Optional.of(buildPatient()));
         when(mockRepository.save(entity)).thenReturn(entity.withId(APPOINTMENT_ID));
@@ -60,6 +64,28 @@ class AppointmentServiceTest {
 
         assertEquals("Patient not found.", thrown.getMessage());
         verifyNoInteractions(mockRepository);
+    }
+
+    @Test
+    void shouldAddAppointmentNotes() {
+        var expected = buildAppointment().withNotes(APPOINTMENT_NOTES);
+        var entity = buildAppointmentEntity().withId(APPOINTMENT_ID);
+        when(mockRepository.findByIdAndPatientId(APPOINTMENT_ID, PATIENT_ID)).thenReturn(Optional.of(entity));
+        when(mockRepository.save(entity.withNotes(APPOINTMENT_NOTES))).thenAnswer(i -> i.getArguments()[0]);
+
+        var actual = service.addAppointmentNotes(PATIENT_ID, APPOINTMENT_ID, buildAddAppointmentNotesParams());
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentExceptionAddingAppointmentNotesIfAppointmentNotFound() {
+        when(mockRepository.findByIdAndPatientId(APPOINTMENT_ID, PATIENT_ID)).thenReturn(Optional.empty());
+
+        var thrown = assertThrows(IllegalArgumentException.class, () -> service.addAppointmentNotes(PATIENT_ID, APPOINTMENT_ID, buildAddAppointmentNotesParams()));
+
+        assertEquals("Appointment not found.", thrown.getMessage());
+        verify(mockRepository, never()).save(any());
     }
 
     @Test

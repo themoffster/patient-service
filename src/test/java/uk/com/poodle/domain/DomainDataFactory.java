@@ -2,6 +2,7 @@ package uk.com.poodle.domain;
 
 import static uk.com.poodle.Constants.APPOINTMENT_DATE_TIME;
 import static uk.com.poodle.Constants.APPOINTMENT_ID;
+import static uk.com.poodle.Constants.APPOINTMENT_NOTES;
 import static uk.com.poodle.Constants.CONTACT_DETAILS_EMAIL;
 import static uk.com.poodle.Constants.CONTACT_DETAILS_MOBILE_PHONE;
 import static uk.com.poodle.Constants.GUARDIAN_DOB;
@@ -48,6 +49,12 @@ public class DomainDataFactory {
     public static AddAppointmentParams buildAddAppointmentParams() {
         return AddAppointmentParams.builder()
             .dateTime(APPOINTMENT_DATE_TIME)
+            .build();
+    }
+
+    public static AddAppointmentNotesParams buildAddAppointmentNotesParams() {
+        return AddAppointmentNotesParams.builder()
+            .notes(APPOINTMENT_NOTES)
             .build();
     }
 

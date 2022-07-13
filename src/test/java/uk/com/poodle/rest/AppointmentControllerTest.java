@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import uk.com.poodle.domain.AddAppointmentNotesParams;
 import uk.com.poodle.domain.AddAppointmentParams;
 import uk.com.poodle.service.AppointmentService;
 
@@ -26,7 +27,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.com.poodle.Constants.APPOINTMENT_ID;
+import static uk.com.poodle.Constants.APPOINTMENT_NOTES;
 import static uk.com.poodle.Constants.PATIENT_ID;
+import static uk.com.poodle.domain.DomainDataFactory.buildAddAppointmentNotesParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddAppointmentParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildAppointment;
 import static uk.com.poodle.utils.FileUtils.fileToString;
@@ -86,12 +90,43 @@ class AppointmentControllerTest {
             .andExpect(status().isBadRequest());
     }
 
+    @Test
+    void shouldAddNotesToAppointment() throws Exception {
+        when(mockService.addAppointmentNotes(PATIENT_ID, APPOINTMENT_ID, buildAddAppointmentNotesParams())).thenReturn(buildAppointment().withNotes(APPOINTMENT_NOTES));
+
+        mvc.perform(post("/patients/" + PATIENT_ID + "/appointments/" + APPOINTMENT_ID + "/notes/add")
+                .contentType(APPLICATION_JSON)
+                .content(fileToString("add-appointment-notes-params.json", getClass())))
+            .andExpect(status().isCreated())
+            .andExpect(content().json(fileToString("appointment-with-notes.json", getClass())));
+    }
+
+    @NullSource
+    @ParameterizedTest
+    @MethodSource("invalidAddAppointmentNotesParams")
+    void shouldReturnBadRequestWhenAddAppointmentNotesParamsAreInvalid(AddAppointmentNotesParams params) throws Exception {
+        var json = mapper.writeValueAsString(params);
+
+        mvc.perform(post("/patients/" + PATIENT_ID + "/appointments/" + APPOINTMENT_ID + "/notes/add")
+                .contentType(APPLICATION_JSON)
+                .content(json))
+            .andExpect(status().isBadRequest());
+    }
+
     private static Stream<Arguments> invalidAddAppointmentParams() {
         return Stream.of(
             Arguments.of(AddAppointmentParams.builder().build()),
             Arguments.of(AddAppointmentParams.builder()
                 .dateTime(now().minus(1, DAYS))
                 .build())
+        );
+    }
+
+    private static Stream<Arguments> invalidAddAppointmentNotesParams() {
+        return Stream.of(
+            Arguments.of(AddAppointmentNotesParams.builder().build()),
+            Arguments.of(AddAppointmentNotesParams.builder().notes("").build()),
+            Arguments.of(AddAppointmentNotesParams.builder().notes(" ").build())
         );
     }
 }

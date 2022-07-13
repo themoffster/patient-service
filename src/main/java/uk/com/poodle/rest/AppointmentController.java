@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import uk.com.poodle.domain.AddAppointmentNotesParams;
 import uk.com.poodle.domain.AddAppointmentParams;
 import uk.com.poodle.domain.Appointment;
 import uk.com.poodle.service.AppointmentService;
@@ -32,6 +33,14 @@ public class AppointmentController {
     @PostMapping("/add")
     public ResponseEntity<Appointment> addAppointment(@PathVariable("patientId") String patientId, @RequestBody @Valid AddAppointmentParams params) {
         return ResponseEntity.status(CREATED).body(service.addAppointment(patientId, params));
+    }
+
+    @PostMapping("/{appointmentId}/notes/add")
+    public ResponseEntity<Appointment> addAppointmentNotes(
+        @PathVariable("patientId") String patientId,
+        @PathVariable("appointmentId") String appointmentId,
+        @RequestBody @Valid AddAppointmentNotesParams params) {
+        return ResponseEntity.status(CREATED).body(service.addAppointmentNotes(patientId, appointmentId, params));
     }
 
     @GetMapping

@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.com.poodle.Constants.APPOINTMENT_DATE_TIME;
@@ -66,6 +67,17 @@ class AppointmentRepositoryTest {
 
         assertEquals(1, appointments.size());
         assertTrue(appointments.contains(entity));
+    }
+
+    @Test
+    void shouldFindAppointmentByIdAndPatientId() {
+        var entity = buildAppointmentEntity().withPatientId(patientId);
+        appointmentRepository.save(entity);
+
+        var appointment = appointmentRepository.findByIdAndPatientId(entity.getId(), patientId).orElseThrow();
+
+        assertNotNull(appointment);
+        assertEquals(entity, appointment);
     }
 
     @Test

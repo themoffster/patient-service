@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.stereotype.Service;
 import uk.com.poodle.data.AppointmentRepository;
+import uk.com.poodle.domain.AddAppointmentNotesParams;
 import uk.com.poodle.domain.AddAppointmentParams;
 import uk.com.poodle.domain.Appointment;
 
@@ -32,11 +33,19 @@ public class AppointmentService {
         return map(savedEntity);
     }
 
-    public List<Appointment> getAppointments(String id, boolean includeHistoric) {
-        log.info("Retrieving appointments for patient {}.", id);
+    public Appointment addAppointmentNotes(String patientId, String appointmentId, AddAppointmentNotesParams params) {
+        var appointmentEntity = repository.findByIdAndPatientId(appointmentId, patientId).orElseThrow(() -> new IllegalArgumentException("Appointment not found."));
+        log.info("Adding notes to appointment {}.", appointmentId);
+        var savedEntity = repository.save(appointmentEntity.withNotes(params.getNotes()));
+        log.info("Added notes to appointment {}.", appointmentId);
+        return map(savedEntity);
+    }
+
+    public List<Appointment> getAppointments(String patientId, boolean includeHistoric) {
+        log.info("Retrieving appointments for patient {}.", patientId);
         var appointments = includeHistoric
-            ? repository.findAllByPatientId(id)
-            : repository.findAllByPatientIdAndDateTimeGreaterThanEqual(id, now());
+            ? repository.findAllByPatientId(patientId)
+            : repository.findAllByPatientIdAndDateTimeGreaterThanEqual(patientId, now());
         return appointments.stream()
             .map(AppointmentMapper::map)
             .collect(toList());

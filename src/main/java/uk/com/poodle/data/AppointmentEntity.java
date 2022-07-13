@@ -37,4 +37,7 @@ public class AppointmentEntity {
     @Column(name = "datetime")
     private LocalDateTime dateTime;
 
+    @Column(name = "notes")
+    private String notes;
+
 }
