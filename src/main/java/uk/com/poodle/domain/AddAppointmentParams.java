@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 @Value
 @Builder
 @Jacksonized
-public class CreateAppointmentParams {
+public class AddAppointmentParams {
 
     @Future
     @NotNull

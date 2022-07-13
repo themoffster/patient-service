@@ -29,7 +29,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static uk.com.poodle.Constants.PATIENT_ID;
-import static uk.com.poodle.domain.DomainDataFactory.buildCreatePatientParams;
+import static uk.com.poodle.domain.DomainDataFactory.buildAddPatientParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildPatient;
 
 @AutoConfigureWireMock(port = 0)
@@ -46,9 +46,9 @@ class PatientControllerIntegrationTest {
     private ObjectMapper mapper;
 
     @Test
-    void shouldCreatePatient() throws JsonProcessingException, JSONException {
-        var payload = buildCreatePatientParams();
-        var responseEntity = restTemplate.postForEntity("/patients/create", payload, Patient.class);
+    void shouldAddPatient() throws JsonProcessingException, JSONException {
+        var payload = buildAddPatientParams();
+        var responseEntity = restTemplate.postForEntity("/patients/add", payload, Patient.class);
 
         assertEquals(CREATED, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());

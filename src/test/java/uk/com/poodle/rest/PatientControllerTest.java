@@ -12,7 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import uk.com.poodle.domain.CreatePatientParams;
+import uk.com.poodle.domain.AddPatientParams;
 import uk.com.poodle.service.PatientService;
 
 import java.util.List;
@@ -30,7 +30,7 @@ import static uk.com.poodle.Constants.PATIENT_FIRSTNAME;
 import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.Constants.PATIENT_LASTNAME;
 import static uk.com.poodle.Constants.PATIENT_SEX;
-import static uk.com.poodle.domain.DomainDataFactory.buildCreatePatientParams;
+import static uk.com.poodle.domain.DomainDataFactory.buildAddPatientParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildPatient;
 import static uk.com.poodle.utils.FileUtils.fileToString;
 
@@ -74,44 +74,44 @@ class PatientControllerTest {
     }
 
     @Test
-    void shouldCreatePatient() throws Exception {
-        when(mockService.createPatient(buildCreatePatientParams())).thenReturn(buildPatient());
+    void shouldAddPatient() throws Exception {
+        when(mockService.addPatient(buildAddPatientParams())).thenReturn(buildPatient());
 
-        mvc.perform(post("/patients/create")
+        mvc.perform(post("/patients/add")
                 .contentType(APPLICATION_JSON)
-                .content(fileToString("create-patient-params.json", getClass())))
+                .content(fileToString("add-patient-params.json", getClass())))
             .andExpect(status().isCreated())
             .andExpect(content().json(fileToString("patient.json", getClass())));
     }
 
     @NullSource
     @ParameterizedTest
-    @MethodSource("invalidCreatePatientParams")
-    void shouldReturnBadRequestWhenCreatePatientParamsAreInvalid(CreatePatientParams params) throws Exception {
+    @MethodSource("invalidAddPatientParams")
+    void shouldReturnBadRequestWhenAddPatientParamsAreInvalid(AddPatientParams params) throws Exception {
         var json = mapper.writeValueAsString(params);
 
-        mvc.perform(post("/patients/create")
+        mvc.perform(post("/patients/add")
                 .contentType(APPLICATION_JSON)
                 .content(json))
             .andExpect(status().isBadRequest());
     }
 
-    private static Stream<Arguments> invalidCreatePatientParams() {
+    private static Stream<Arguments> invalidAddPatientParams() {
         return Stream.of(
-            Arguments.of(CreatePatientParams.builder().build()),
-            Arguments.of(buildValidCreatePatientParams().withFirstname(null)),
-            Arguments.of(buildValidCreatePatientParams().withFirstname("")),
-            Arguments.of(buildValidCreatePatientParams().withFirstname(" ")),
-            Arguments.of(buildValidCreatePatientParams().withLastname(null)),
-            Arguments.of(buildValidCreatePatientParams().withLastname("")),
-            Arguments.of(buildValidCreatePatientParams().withLastname(" ")),
-            Arguments.of(buildValidCreatePatientParams().withDob(null)),
-            Arguments.of(buildValidCreatePatientParams().withSex(null))
+            Arguments.of(AddPatientParams.builder().build()),
+            Arguments.of(buildValidAddPatientParams().withFirstname(null)),
+            Arguments.of(buildValidAddPatientParams().withFirstname("")),
+            Arguments.of(buildValidAddPatientParams().withFirstname(" ")),
+            Arguments.of(buildValidAddPatientParams().withLastname(null)),
+            Arguments.of(buildValidAddPatientParams().withLastname("")),
+            Arguments.of(buildValidAddPatientParams().withLastname(" ")),
+            Arguments.of(buildValidAddPatientParams().withDob(null)),
+            Arguments.of(buildValidAddPatientParams().withSex(null))
         );
     }
 
-    private static CreatePatientParams buildValidCreatePatientParams() {
-        return CreatePatientParams.builder()
+    private static AddPatientParams buildValidAddPatientParams() {
+        return AddPatientParams.builder()
             .dob(PATIENT_DOB)
             .firstname(PATIENT_FIRSTNAME)
             .lastname(PATIENT_LASTNAME)

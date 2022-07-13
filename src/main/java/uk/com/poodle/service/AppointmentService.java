@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.stereotype.Service;
 import uk.com.poodle.data.AppointmentRepository;
+import uk.com.poodle.domain.AddAppointmentParams;
 import uk.com.poodle.domain.Appointment;
-import uk.com.poodle.domain.CreateAppointmentParams;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,12 +23,12 @@ public class AppointmentService {
     private final DateTimeProvider dateTimeProvider;
     private final PatientService patientService;
 
-    public Appointment createAppointment(String patientId, CreateAppointmentParams params) {
+    public Appointment addAppointment(String patientId, AddAppointmentParams params) {
         var patient = patientService.getPatient(patientId).orElseThrow(() -> new IllegalArgumentException("Patient not found."));
-        log.info("Creating appointment for {}.", patient.getId());
+        log.info("Adding appointment for {}.", patient.getId());
         var entity = map(patientId, params);
         var savedEntity = repository.save(entity);
-        log.info("Created appointment on {} for {}.", params.getDateTime(), patient.getId());
+        log.info("Added appointment on {} for {}.", params.getDateTime(), patient.getId());
         return map(savedEntity);
     }
 

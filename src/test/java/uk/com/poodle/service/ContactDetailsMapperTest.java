@@ -30,7 +30,7 @@ class ContactDetailsMapperTest {
     }
 
     @Test
-    void shouldMapCreateContactDetails() {
+    void shouldMapAddContactDetails() {
         var contactDetails = map(buildContactDetails(CONTACT_DETAILS_ID));
         assertEquals(buildContactDetailsEntity(CONTACT_DETAILS_ID), contactDetails);
     }

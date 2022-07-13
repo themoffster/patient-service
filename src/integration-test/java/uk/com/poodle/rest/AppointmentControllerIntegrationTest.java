@@ -27,7 +27,7 @@ import static org.springframework.http.HttpStatus.OK;
 import static uk.com.poodle.Constants.APPOINTMENT_DATE_TIME;
 import static uk.com.poodle.Constants.APPOINTMENT_ID;
 import static uk.com.poodle.Constants.PATIENT_ID;
-import static uk.com.poodle.domain.DomainDataFactory.buildCreateAppointmentParams;
+import static uk.com.poodle.domain.DomainDataFactory.buildAddAppointmentParams;
 
 @AutoConfigureWireMock(port = 0)
 @ExtendWith(SpringExtension.class)
@@ -40,9 +40,9 @@ class AppointmentControllerIntegrationTest {
     private TestRestTemplate restTemplate;
 
     @TestWithData
-    void shouldCreateAppointment() {
-        var payload = buildCreateAppointmentParams();
-        var responseEntity = restTemplate.postForEntity("/patients/{patientId}/appointments/create", payload, Appointment.class, Map.of("patientId", PATIENT_ID));
+    void shouldAddAppointment() {
+        var payload = buildAddAppointmentParams();
+        var responseEntity = restTemplate.postForEntity("/patients/{patientId}/appointments/add", payload, Appointment.class, Map.of("patientId", PATIENT_ID));
 
         assertEquals(CREATED, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());

@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.data.EntityDataFactory.buildPatientEntity;
-import static uk.com.poodle.domain.DomainDataFactory.buildCreatePatientParams;
+import static uk.com.poodle.domain.DomainDataFactory.buildAddPatientParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildPatient;
 import static uk.com.poodle.service.PatientMapper.map;
 
@@ -32,8 +32,8 @@ class PatientMapperTest {
     }
 
     @Test
-    void shouldMapCreatePatientParams() {
-        var patient = map(buildCreatePatientParams());
+    void shouldMapAddPatientParams() {
+        var patient = map(buildAddPatientParams());
         assertEquals(EntityDataFactory.buildPatientEntity(), patient);
     }
 }

@@ -28,8 +28,8 @@ public class DomainDataFactory {
             .build();
     }
 
-    public static CreatePatientParams buildCreatePatientParams() {
-        return CreatePatientParams.builder()
+    public static AddPatientParams buildAddPatientParams() {
+        return AddPatientParams.builder()
             .dob(PATIENT_DOB)
             .firstname(PATIENT_FIRSTNAME)
             .lastname(PATIENT_LASTNAME)
@@ -45,8 +45,8 @@ public class DomainDataFactory {
             .build();
     }
 
-    public static CreateAppointmentParams buildCreateAppointmentParams() {
-        return CreateAppointmentParams.builder()
+    public static AddAppointmentParams buildAddAppointmentParams() {
+        return AddAppointmentParams.builder()
             .dateTime(APPOINTMENT_DATE_TIME)
             .build();
     }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.com.poodle.domain.CreatePatientParams;
+import uk.com.poodle.domain.AddPatientParams;
 import uk.com.poodle.domain.Patient;
 import uk.com.poodle.service.PatientService;
 
@@ -28,9 +28,9 @@ public class PatientController {
 
     private final PatientService service;
 
-    @PostMapping("/create")
-    public ResponseEntity<Patient> createPatient(@RequestBody @Valid CreatePatientParams params) {
-        return ResponseEntity.status(CREATED).body(service.createPatient(params));
+    @PostMapping("/add")
+    public ResponseEntity<Patient> addPatient(@RequestBody @Valid AddPatientParams params) {
+        return ResponseEntity.status(CREATED).body(service.addPatient(params));
     }
 
     @GetMapping

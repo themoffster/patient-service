@@ -12,7 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import uk.com.poodle.domain.CreateAppointmentParams;
+import uk.com.poodle.domain.AddAppointmentParams;
 import uk.com.poodle.service.AppointmentService;
 
 import java.util.List;
@@ -27,8 +27,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.com.poodle.Constants.PATIENT_ID;
+import static uk.com.poodle.domain.DomainDataFactory.buildAddAppointmentParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildAppointment;
-import static uk.com.poodle.domain.DomainDataFactory.buildCreateAppointmentParams;
 import static uk.com.poodle.utils.FileUtils.fileToString;
 
 @ExtendWith(SpringExtension.class)
@@ -64,32 +64,32 @@ class AppointmentControllerTest {
     }
 
     @Test
-    void shouldCreateAppointment() throws Exception {
-        when(mockService.createAppointment(PATIENT_ID, buildCreateAppointmentParams())).thenReturn(buildAppointment());
+    void shouldAddAppointment() throws Exception {
+        when(mockService.addAppointment(PATIENT_ID, buildAddAppointmentParams())).thenReturn(buildAppointment());
 
-        mvc.perform(post("/patients/" + PATIENT_ID + "/appointments/create")
+        mvc.perform(post("/patients/" + PATIENT_ID + "/appointments/add")
                 .contentType(APPLICATION_JSON)
-                .content(fileToString("create-appointment-params.json", getClass())))
+                .content(fileToString("add-appointment-params.json", getClass())))
             .andExpect(status().isCreated())
             .andExpect(content().json(fileToString("appointment.json", getClass())));
     }
 
     @NullSource
     @ParameterizedTest
-    @MethodSource("invalidCreateAppointmentParams")
-    void shouldReturnBadRequestWhenCreateAppointmentParamsAreInvalid(CreateAppointmentParams params) throws Exception {
+    @MethodSource("invalidAddAppointmentParams")
+    void shouldReturnBadRequestWhenAddAppointmentParamsAreInvalid(AddAppointmentParams params) throws Exception {
         var json = mapper.writeValueAsString(params);
 
-        mvc.perform(post("/patients/" + PATIENT_ID + "/appointments/create")
+        mvc.perform(post("/patients/" + PATIENT_ID + "/appointments/add")
                 .contentType(APPLICATION_JSON)
                 .content(json))
             .andExpect(status().isBadRequest());
     }
 
-    private static Stream<Arguments> invalidCreateAppointmentParams() {
+    private static Stream<Arguments> invalidAddAppointmentParams() {
         return Stream.of(
-            Arguments.of(CreateAppointmentParams.builder().build()),
-            Arguments.of(CreateAppointmentParams.builder()
+            Arguments.of(AddAppointmentParams.builder().build()),
+            Arguments.of(AddAppointmentParams.builder()
                 .dateTime(now().minus(1, DAYS))
                 .build())
         );

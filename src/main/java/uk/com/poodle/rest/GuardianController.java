@@ -29,7 +29,7 @@ public class GuardianController {
     private final GuardianService service;
 
     @PostMapping("/add")
-    public ResponseEntity<Guardian> createGuardian(@PathVariable("patientId") String id, @RequestBody @Valid AddGuardianDetailsParams params) {
+    public ResponseEntity<Guardian> addGuardian(@PathVariable("patientId") String id, @RequestBody @Valid AddGuardianDetailsParams params) {
         return ResponseEntity.status(CREATED).body(service.addGuardian(id, params));
     }
 

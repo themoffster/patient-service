@@ -2,7 +2,7 @@ package uk.com.poodle.service;
 
 import lombok.experimental.UtilityClass;
 import uk.com.poodle.data.PatientEntity;
-import uk.com.poodle.domain.CreatePatientParams;
+import uk.com.poodle.domain.AddPatientParams;
 import uk.com.poodle.domain.Patient;
 import uk.com.poodle.domain.Sex;
 
@@ -19,7 +19,7 @@ class PatientMapper {
             .build();
     }
 
-    public static PatientEntity map(CreatePatientParams params) {
+    public static PatientEntity map(AddPatientParams params) {
         return PatientEntity.builder()
             .dob(params.getDob())
             .firstname(params.getFirstname())

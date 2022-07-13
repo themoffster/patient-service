@@ -32,7 +32,7 @@ class GuardianMapperTest {
     }
 
     @Test
-    void shouldMapCreateGuardianParams() {
+    void shouldMapAddGuardianParams() {
         var guardian = map(PATIENT_ID, buildAddGuardianDetailsParams());
         assertEquals(buildGuardianEntity(), guardian);
     }

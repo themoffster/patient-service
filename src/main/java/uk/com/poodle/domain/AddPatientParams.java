@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 @Value
 @Builder
 @Jacksonized
-public class CreatePatientParams {
+public class AddPatientParams {
 
     @NotNull
     @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd")

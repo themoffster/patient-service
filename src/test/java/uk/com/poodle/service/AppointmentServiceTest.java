@@ -20,8 +20,8 @@ import static uk.com.poodle.Constants.APPOINTMENT_DATE_TIME;
 import static uk.com.poodle.Constants.APPOINTMENT_ID;
 import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.data.EntityDataFactory.buildAppointmentEntity;
+import static uk.com.poodle.domain.DomainDataFactory.buildAddAppointmentParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildAppointment;
-import static uk.com.poodle.domain.DomainDataFactory.buildCreateAppointmentParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildPatient;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,23 +40,23 @@ class AppointmentServiceTest {
     private AppointmentService service;
 
     @Test
-    void shouldCreateAppointment() {
+    void shouldAddAppointment() {
         var expected = buildAppointment();
         var entity = EntityDataFactory.buildAppointmentEntity();
-        var params = buildCreateAppointmentParams();
+        var params = buildAddAppointmentParams();
         when(mockPatientService.getPatient(PATIENT_ID)).thenReturn(Optional.of(buildPatient()));
         when(mockRepository.save(entity)).thenReturn(entity.withId(APPOINTMENT_ID));
 
-        var actual = service.createAppointment(PATIENT_ID, params);
+        var actual = service.addAppointment(PATIENT_ID, params);
 
         assertEquals(expected, actual);
     }
 
     @Test
-    void shouldThrowIllegalArgumentExceptionCreatingAppointmentIfPatientNotFound() {
+    void shouldThrowIllegalArgumentExceptionAddingAppointmentIfPatientNotFound() {
         when(mockPatientService.getPatient(PATIENT_ID)).thenReturn(Optional.empty());
 
-        var thrown = assertThrows(IllegalArgumentException.class, () -> service.createAppointment(PATIENT_ID, buildCreateAppointmentParams()));
+        var thrown = assertThrows(IllegalArgumentException.class, () -> service.addAppointment(PATIENT_ID, buildAddAppointmentParams()));
 
         assertEquals("Patient not found.", thrown.getMessage());
         verifyNoInteractions(mockRepository);

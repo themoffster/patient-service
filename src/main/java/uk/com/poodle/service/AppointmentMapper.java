@@ -2,8 +2,8 @@ package uk.com.poodle.service;
 
 import lombok.experimental.UtilityClass;
 import uk.com.poodle.data.AppointmentEntity;
+import uk.com.poodle.domain.AddAppointmentParams;
 import uk.com.poodle.domain.Appointment;
-import uk.com.poodle.domain.CreateAppointmentParams;
 
 @UtilityClass
 class AppointmentMapper {
@@ -16,7 +16,7 @@ class AppointmentMapper {
             .build();
     }
 
-    public static AppointmentEntity map(String patientId, CreateAppointmentParams params) {
+    public static AppointmentEntity map(String patientId, AddAppointmentParams params) {
         return AppointmentEntity.builder()
             .dateTime(params.getDateTime())
             .patientId(patientId)

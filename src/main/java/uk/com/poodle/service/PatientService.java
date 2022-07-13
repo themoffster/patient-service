@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.com.poodle.data.PatientRepository;
-import uk.com.poodle.domain.CreatePatientParams;
+import uk.com.poodle.domain.AddPatientParams;
 import uk.com.poodle.domain.Patient;
 
 import java.util.List;
@@ -21,11 +21,11 @@ public class PatientService {
 
     private final PatientRepository repository;
 
-    public Patient createPatient(CreatePatientParams params) {
-        log.info("Creating patient {} {}.", params.getFirstname(), params.getLastname());
+    public Patient addPatient(AddPatientParams params) {
+        log.info("Adding patient {} {}.", params.getFirstname(), params.getLastname());
         var entity = map(params);
         var savedEntity = repository.save(entity);
-        log.info("Created patient record {} for {} {}.", savedEntity.getId(), savedEntity.getFirstname(), savedEntity.getLastname());
+        log.info("Added patient record {} for {} {}.", savedEntity.getId(), savedEntity.getFirstname(), savedEntity.getLastname());
         return map(savedEntity);
     }
 
