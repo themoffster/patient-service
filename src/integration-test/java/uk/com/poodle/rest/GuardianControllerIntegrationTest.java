@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddGuardianDetailsParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildGuardian;
@@ -54,6 +55,23 @@ class GuardianControllerIntegrationTest {
         JSONAssert.assertEquals(
             mapper.writeValueAsString(buildGuardian()),
             mapper.writeValueAsString(responseEntity.getBody()),
+            new CustomComparator(
+                JSONCompareMode.STRICT,
+                new Customization("id", (o1, o2) -> true)));
+    }
+
+    @TestWithData
+    void shouldGetGuardiansForPatient() throws JsonProcessingException, JSONException {
+        var responseEntity = restTemplate.getForEntity("/patients/{patientId}/guardians", Guardian[].class, Map.of("patientId", PATIENT_ID));
+
+        assertEquals(OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+        assertEquals(1, responseEntity.getBody().length);
+        var guardian = responseEntity.getBody()[0];
+        assertNotNull(guardian.getId());
+        JSONAssert.assertEquals(
+            mapper.writeValueAsString(buildGuardian()),
+            mapper.writeValueAsString(guardian),
             new CustomComparator(
                 JSONCompareMode.STRICT,
                 new Customization("id", (o1, o2) -> true)));

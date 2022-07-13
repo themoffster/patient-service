@@ -15,10 +15,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import uk.com.poodle.domain.AddGuardianDetailsParams;
 import uk.com.poodle.service.GuardianService;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -65,6 +67,16 @@ class GuardianControllerTest {
                 .contentType(APPLICATION_JSON)
                 .content(json))
             .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldGetGuardiansForPatient() throws Exception {
+        when(mockService.getGuardians(PATIENT_ID)).thenReturn(List.of(buildGuardian()));
+
+        mvc.perform(get("/patients/" + PATIENT_ID + "/guardians")
+                .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(fileToString("guardians.json", getClass())));
     }
 
     private static Stream<Arguments> invalidAddGuardianDetailsParams() {

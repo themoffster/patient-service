@@ -7,6 +7,9 @@ import uk.com.poodle.data.GuardianRepository;
 import uk.com.poodle.domain.AddGuardianDetailsParams;
 import uk.com.poodle.domain.Guardian;
 
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 import static uk.com.poodle.service.GuardianMapper.map;
 
 @Slf4j
@@ -24,5 +27,11 @@ public class GuardianService {
         var savedEntity = repository.save(entity);
         log.info("Added guardian record {} for {} {}.", savedEntity.getId(), savedEntity.getFirstname(), savedEntity.getLastname());
         return map(savedEntity);
+    }
+
+    public List<Guardian> getGuardians(String patientId) {
+        return repository.findAllByPatientId(patientId).stream()
+            .map(GuardianMapper::map)
+            .collect(toList());
     }
 }
