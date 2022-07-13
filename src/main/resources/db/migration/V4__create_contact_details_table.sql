@@ -7,5 +7,4 @@ create table contact_details
     email        varchar(200)
 );
 
-alter table guardian
-    add column contact_details_id varchar(36) not null;
+alter table guardian add column contact_details_id varchar(36) not null;

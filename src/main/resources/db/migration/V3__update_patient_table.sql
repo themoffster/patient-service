@@ -1,7 +1,5 @@
-alter table patient
-    add column dob timestamptz not null;
-alter table patient
-    add column sex varchar(1) not null;
+alter table patient add column dob timestamptz not null;
+alter table patient add column sex varchar(1) not null;
 
 create table guardian
 (
@@ -20,14 +18,9 @@ create table relation
     description varchar(100) not null
 );
 
-insert into relation (id, description)
-values (1, 'PARENT');
-insert into relation (id, description)
-values (2, 'GRANDPARENT');
-insert into relation (id, description)
-values (3, 'OTHER');
+insert into relation (id, description) values (1, 'PARENT');
+insert into relation (id, description) values (2, 'GRANDPARENT');
+insert into relation (id, description) values (3, 'OTHER');
 
-alter table guardian
-    add constraint fk_patient_id foreign key (patient_id) references patient;
-alter table guardian
-    add constraint fk_relation_id foreign key (relation_id) references relation;
+alter table guardian add constraint fk_patient_id foreign key (patient_id) references patient;
+alter table guardian add constraint fk_relation_id foreign key (relation_id) references relation;

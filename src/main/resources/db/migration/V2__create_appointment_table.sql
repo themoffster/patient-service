@@ -5,5 +5,4 @@ create table appointment
     datetime   timestamptz  not null
 );
 
-alter table appointment
-    add constraint fk_patient_id foreign key (patient_id) references patient;
+alter table appointment add constraint fk_patient_id foreign key (patient_id) references patient;
