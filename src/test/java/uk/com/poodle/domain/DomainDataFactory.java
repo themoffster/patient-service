@@ -46,7 +46,6 @@ public class DomainDataFactory {
     public static CreateAppointmentParams buildCreateAppointmentParams() {
         return CreateAppointmentParams.builder()
             .dateTime(APPOINTMENT_DATE_TIME)
-            .patientId(PATIENT_ID)
             .build();
     }
 

@@ -42,7 +42,7 @@ class AppointmentControllerIntegrationTest {
     @TestWithData
     void shouldCreateAppointment() {
         var payload = buildCreateAppointmentParams();
-        var responseEntity = restTemplate.postForEntity("/appointments/create", payload, Appointment.class);
+        var responseEntity = restTemplate.postForEntity("/patients/{patientId}/appointments/create", payload, Appointment.class, Map.of("patientId", PATIENT_ID));
 
         assertEquals(CREATED, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
@@ -53,7 +53,7 @@ class AppointmentControllerIntegrationTest {
 
     @TestWithData
     void shouldRetrieveAllAppointmentsForPatient() {
-        var urlTemplate = "/appointments/{patientId}?includeHistoric=true";
+        var urlTemplate = "/patients/{patientId}/appointments?includeHistoric=true";
         var responseEntity = restTemplate.getForEntity(urlTemplate, Appointment[].class, Map.of("patientId", PATIENT_ID));
 
         var expected = List.of(
@@ -77,7 +77,7 @@ class AppointmentControllerIntegrationTest {
 
     @TestWithData
     void shouldRetrieveAllUpcomingAppointmentsForPatient() {
-        var urlTemplate = "/appointments/{patientId}";
+        var urlTemplate = "/patients/{patientId}/appointments";
         var responseEntity = restTemplate.getForEntity(urlTemplate, Appointment[].class, Map.of("patientId", PATIENT_ID));
 
         var expected = Appointment.builder()

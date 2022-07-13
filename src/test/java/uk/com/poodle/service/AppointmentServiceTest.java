@@ -47,7 +47,7 @@ class AppointmentServiceTest {
         when(mockPatientService.getPatient(PATIENT_ID)).thenReturn(Optional.of(buildPatient()));
         when(mockRepository.save(entity)).thenReturn(entity.withId(APPOINTMENT_ID));
 
-        var actual = service.createAppointment(params);
+        var actual = service.createAppointment(PATIENT_ID, params);
 
         assertEquals(expected, actual);
     }
@@ -56,7 +56,7 @@ class AppointmentServiceTest {
     void shouldThrowIllegalArgumentExceptionCreatingAppointmentIfPatientNotFound() {
         when(mockPatientService.getPatient(PATIENT_ID)).thenReturn(Optional.empty());
 
-        var thrown = assertThrows(IllegalArgumentException.class, () -> service.createAppointment(buildCreateAppointmentParams()));
+        var thrown = assertThrows(IllegalArgumentException.class, () -> service.createAppointment(PATIENT_ID, buildCreateAppointmentParams()));
 
         assertEquals("Patient not found.", thrown.getMessage());
         verifyNoInteractions(mockRepository);

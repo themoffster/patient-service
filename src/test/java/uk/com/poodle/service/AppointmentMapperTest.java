@@ -1,7 +1,6 @@
 package uk.com.poodle.service;
 
 import org.junit.jupiter.api.Test;
-import uk.com.poodle.data.EntityDataFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -10,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.com.poodle.Constants.APPOINTMENT_ID;
+import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.data.EntityDataFactory.buildAppointmentEntity;
 import static uk.com.poodle.domain.DomainDataFactory.buildAppointment;
 import static uk.com.poodle.domain.DomainDataFactory.buildCreateAppointmentParams;
@@ -33,7 +33,7 @@ class AppointmentMapperTest {
 
     @Test
     void shouldMapCreateAppointmentParams() {
-        var appointment = map(buildCreateAppointmentParams());
-        assertEquals(EntityDataFactory.buildAppointmentEntity(), appointment);
+        var appointment = map(PATIENT_ID, buildCreateAppointmentParams());
+        assertEquals(buildAppointmentEntity(), appointment);
     }
 }

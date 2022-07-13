@@ -43,7 +43,7 @@ class AppointmentControllerTest {
     void shouldRetrieveAllAppointmentsForPatients() throws Exception {
         when(mockService.getAppointments(PATIENT_ID, true)).thenReturn(List.of(buildAppointment()));
 
-        mvc.perform(get("/appointments/" + PATIENT_ID)
+        mvc.perform(get("/patients/" + PATIENT_ID + "/appointments")
                 .param("includeHistoric", "true"))
             .andExpect(status().isOk())
             .andExpect(content().json(fileToString("appointments.json", getClass())));
@@ -53,16 +53,16 @@ class AppointmentControllerTest {
     void shouldRetrieveAllUpcomingAppointmentsForPatients() throws Exception {
         when(mockService.getAppointments(PATIENT_ID, false)).thenReturn(List.of(buildAppointment()));
 
-        mvc.perform(get("/appointments/" + PATIENT_ID))
+        mvc.perform(get("/patients/" + PATIENT_ID + "/appointments"))
             .andExpect(status().isOk())
             .andExpect(content().json(fileToString("appointments.json", getClass())));
     }
 
     @Test
     void shouldCreateAppointment() throws Exception {
-        when(mockService.createAppointment(buildCreateAppointmentParams())).thenReturn(buildAppointment());
+        when(mockService.createAppointment(PATIENT_ID, buildCreateAppointmentParams())).thenReturn(buildAppointment());
 
-        mvc.perform(post("/appointments/create")
+        mvc.perform(post("/patients/" + PATIENT_ID + "/appointments/create")
                 .contentType(APPLICATION_JSON)
                 .content(fileToString("create-appointment-params.json", getClass())))
             .andExpect(status().isCreated())
@@ -75,7 +75,7 @@ class AppointmentControllerTest {
     void shouldReturnBadRequestWhenCreateAppointmentParamsAreInvalid(CreateAppointmentParams params) throws Exception {
         var json = new ObjectMapper().writeValueAsString(params);
 
-        mvc.perform(post("/appointments/create")
+        mvc.perform(post("/patients/" + PATIENT_ID + "/appointments/create")
                 .contentType(APPLICATION_JSON)
                 .content(json))
             .andExpect(status().isBadRequest());

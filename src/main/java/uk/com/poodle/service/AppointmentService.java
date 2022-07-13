@@ -23,10 +23,10 @@ public class AppointmentService {
     private final DateTimeProvider dateTimeProvider;
     private final PatientService patientService;
 
-    public Appointment createAppointment(CreateAppointmentParams params) {
-        var patient = patientService.getPatient(params.getPatientId()).orElseThrow(() -> new IllegalArgumentException("Patient not found."));
+    public Appointment createAppointment(String patientId, CreateAppointmentParams params) {
+        var patient = patientService.getPatient(patientId).orElseThrow(() -> new IllegalArgumentException("Patient not found."));
         log.info("Creating appointment for {}.", patient.getId());
-        var entity = map(params);
+        var entity = map(patientId, params);
         var savedEntity = repository.save(entity);
         log.info("Created appointment on {} for {}.", params.getDateTime(), patient.getId());
         return map(savedEntity);

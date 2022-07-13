@@ -24,17 +24,17 @@ import static org.springframework.http.ResponseEntity.ok;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/appointments", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/patients/{patientId}/appointments", produces = APPLICATION_JSON_VALUE)
 public class AppointmentController {
 
     private final AppointmentService service;
 
     @PostMapping("/create")
-    public ResponseEntity<Appointment> createAppointments(@RequestBody @Valid CreateAppointmentParams params) {
-        return ResponseEntity.status(CREATED).body(service.createAppointment(params));
+    public ResponseEntity<Appointment> createAppointments(@PathVariable("patientId") String patientId, @RequestBody @Valid CreateAppointmentParams params) {
+        return ResponseEntity.status(CREATED).body(service.createAppointment(patientId, params));
     }
 
-    @GetMapping("{patientId}")
+    @GetMapping
     public ResponseEntity<List<Appointment>> getAppointments(@PathVariable("patientId") String id, @RequestParam(defaultValue = "false") boolean includeHistoric) {
         return ok(service.getAppointments(id, includeHistoric));
     }

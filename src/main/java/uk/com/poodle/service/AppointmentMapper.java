@@ -16,10 +16,10 @@ class AppointmentMapper {
             .build();
     }
 
-    public static AppointmentEntity map(CreateAppointmentParams params) {
+    public static AppointmentEntity map(String patientId, CreateAppointmentParams params) {
         return AppointmentEntity.builder()
             .dateTime(params.getDateTime())
-            .patientId(params.getPatientId())
+            .patientId(patientId)
             .build();
     }
 }
