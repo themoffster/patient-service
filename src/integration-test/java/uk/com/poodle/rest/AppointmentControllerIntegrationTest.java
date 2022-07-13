@@ -13,6 +13,7 @@ import uk.com.poodle.domain.Appointment;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD;
@@ -52,8 +53,8 @@ class AppointmentControllerIntegrationTest {
 
     @TestWithData
     void shouldRetrieveAllAppointmentsForPatient() {
-        var urlTemplate = "/appointments/" + PATIENT_ID + "?includeHistoric=true";
-        var responseEntity = restTemplate.getForEntity(urlTemplate, Appointment[].class);
+        var urlTemplate = "/appointments/{patientId}?includeHistoric=true";
+        var responseEntity = restTemplate.getForEntity(urlTemplate, Appointment[].class, Map.of("patientId", PATIENT_ID));
 
         var expected = List.of(
             Appointment.builder()
@@ -76,8 +77,8 @@ class AppointmentControllerIntegrationTest {
 
     @TestWithData
     void shouldRetrieveAllUpcomingAppointmentsForPatient() {
-        var urlTemplate = "/appointments/" + PATIENT_ID;
-        var responseEntity = restTemplate.getForEntity(urlTemplate, Appointment[].class);
+        var urlTemplate = "/appointments/{patientId}";
+        var responseEntity = restTemplate.getForEntity(urlTemplate, Appointment[].class, Map.of("patientId", PATIENT_ID));
 
         var expected = Appointment.builder()
             .id(APPOINTMENT_ID)

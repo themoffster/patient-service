@@ -18,6 +18,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.com.poodle.config.EmbeddedDatabaseTestConfig;
 import uk.com.poodle.domain.Guardian;
 
+import java.util.Map;
+
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,7 +46,7 @@ class GuardianControllerIntegrationTest {
     @TestWithData
     void shouldAddGuardianToPatient() throws JsonProcessingException, JSONException {
         var payload = buildAddGuardianDetailsParams();
-        var responseEntity = restTemplate.postForEntity("/patients/" + PATIENT_ID + "/guardians/add", payload, Guardian.class);
+        var responseEntity = restTemplate.postForEntity("/patients/{patientId}/guardians/add", payload, Guardian.class, Map.of("patientId", PATIENT_ID));
 
         assertEquals(CREATED, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());

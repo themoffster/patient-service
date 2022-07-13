@@ -19,6 +19,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.com.poodle.config.EmbeddedDatabaseTestConfig;
 import uk.com.poodle.domain.Patient;
 
+import java.util.Map;
+
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -72,8 +74,8 @@ class PatientControllerIntegrationTest {
 
     @TestWithData
     void shouldRetrievePatient() {
-        var urlTemplate = "/patients/" + PATIENT_ID;
-        var responseEntity = restTemplate.getForEntity(urlTemplate, Patient.class);
+        var urlTemplate = "/patients/{patientId}";
+        var responseEntity = restTemplate.getForEntity(urlTemplate, Patient.class, Map.of("patientId", PATIENT_ID));
 
         assertEquals(OK, responseEntity.getStatusCode());
         assertEquals(buildPatient(), responseEntity.getBody());
