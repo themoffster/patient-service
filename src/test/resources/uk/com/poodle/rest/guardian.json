@@ -1,5 +1,9 @@
 {
   "id": "72181737-7c07-4183-8f1c-9a181eec3006",
+  "contactDetails": {
+    "email": "foo@bar.com",
+    "mobilePhone": "07123456789"
+  },
   "dob": "1980-06-01",
   "firstname": "Jane",
   "lastname": "Bloggs",

@@ -16,6 +16,8 @@ public class Guardian {
 
     String id;
 
+    ContactDetails contactDetails;
+
     @JsonFormat(shape = STRING)
     LocalDate dob;
 

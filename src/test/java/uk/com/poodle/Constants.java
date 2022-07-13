@@ -15,6 +15,10 @@ public class Constants {
     public static final String APPOINTMENT_ID = "77e37b83-0483-4ba0-9ff1-acc070313e41";
     public static final LocalDateTime APPOINTMENT_DATE_TIME = LocalDateTime.of(2030, 1, 1, 9, 0);
 
+    public static final String CONTACT_DETAILS_ID = "841646d2-e6a6-4be2-a014-674bb65aefcd";
+    public static final String CONTACT_DETAILS_EMAIL = "foo@bar.com";
+    public static final String CONTACT_DETAILS_MOBILE_PHONE = "07123456789";
+
     public static final String GUARDIAN_ID = "72181737-7c07-4183-8f1c-9a181eec3006";
     public static final LocalDate GUARDIAN_DOB = LocalDate.of(1980, 6, 1);
     public static final String GUARDIAN_FIRSTNAME = "Jane";

@@ -9,7 +9,7 @@ import org.springframework.data.auditing.DateTimeProvider;
 import uk.com.poodle.data.AppointmentEntity;
 import uk.com.poodle.data.AppointmentRepository;
 import uk.com.poodle.domain.ContactDetails;
-import uk.com.poodle.domain.Patient;
+import uk.com.poodle.domain.Guardian;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -36,7 +36,7 @@ class AppointmentReminderServiceTest {
     private MailService mockMailService;
 
     @Mock
-    private PatientService mockPatientService;
+    private GuardianService mockGuardianService;
 
     @InjectMocks
     private AppointmentReminderService appointmentReminderService;
@@ -48,14 +48,14 @@ class AppointmentReminderServiceTest {
             .dateTime(APPOINTMENT_DATE_TIME)
             .patientId(PATIENT_ID)
             .build();
-        var patient = Patient.builder()
+        var guardian = Guardian.builder()
             .contactDetails(ContactDetails.builder()
                 .email("foo@bar.com")
                 .build())
             .build();
         when(mockDateTimeProvider.getNow()).thenReturn(Optional.of(now));
         when(mockAppointmentRepository.findAllByDateTimeAfter(now.plusDays(1L))).thenReturn(List.of(appointment));
-        when(mockPatientService.getPatient(PATIENT_ID)).thenReturn(Optional.of(patient));
+        when(mockGuardianService.getGuardians(PATIENT_ID)).thenReturn(List.of(guardian));
         doNothing().when(mockMailService).send("foo@bar.com", SUBJECT, "Your appointment is at 09:00.");
 
         appointmentReminderService.remind();

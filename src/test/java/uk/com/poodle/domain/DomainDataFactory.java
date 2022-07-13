@@ -2,6 +2,8 @@ package uk.com.poodle.domain;
 
 import static uk.com.poodle.Constants.APPOINTMENT_DATE_TIME;
 import static uk.com.poodle.Constants.APPOINTMENT_ID;
+import static uk.com.poodle.Constants.CONTACT_DETAILS_EMAIL;
+import static uk.com.poodle.Constants.CONTACT_DETAILS_MOBILE_PHONE;
 import static uk.com.poodle.Constants.GUARDIAN_DOB;
 import static uk.com.poodle.Constants.GUARDIAN_FIRSTNAME;
 import static uk.com.poodle.Constants.GUARDIAN_ID;
@@ -52,6 +54,7 @@ public class DomainDataFactory {
     public static Guardian buildGuardian() {
         return Guardian.builder()
             .id(GUARDIAN_ID)
+            .contactDetails(buildContactDetails())
             .dob(GUARDIAN_DOB)
             .firstname(GUARDIAN_FIRSTNAME)
             .lastname(GUARDIAN_LASTNAME)
@@ -62,11 +65,24 @@ public class DomainDataFactory {
 
     public static AddGuardianDetailsParams buildAddGuardianDetailsParams() {
         return AddGuardianDetailsParams.builder()
+            .contactDetails(buildContactDetails())
             .dob(GUARDIAN_DOB)
             .firstname(GUARDIAN_FIRSTNAME)
             .lastname(GUARDIAN_LASTNAME)
             .relation(GUARDIAN_RELATION)
             .sex(GUARDIAN_SEX)
+            .build();
+    }
+
+    public static ContactDetails buildContactDetails() {
+        return buildContactDetails(null);
+    }
+
+    public static ContactDetails buildContactDetails(String id) {
+        return ContactDetails.builder()
+            .id(id)
+            .email(CONTACT_DETAILS_EMAIL)
+            .mobilePhone(CONTACT_DETAILS_MOBILE_PHONE)
             .build();
     }
 }

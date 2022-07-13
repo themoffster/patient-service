@@ -9,5 +9,9 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public class ContactDetails {
 
+    String id;
+    String homePhone;
+    String workPhone;
+    String mobilePhone;
     String email;
 }

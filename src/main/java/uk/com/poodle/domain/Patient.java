@@ -19,8 +19,6 @@ public class Patient {
 
     List<Appointment> appointments;
 
-    ContactDetails contactDetails;
-
     @JsonFormat(shape = STRING)
     LocalDate dob;
 

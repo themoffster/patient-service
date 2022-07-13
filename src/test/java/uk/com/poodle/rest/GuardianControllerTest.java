@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.com.poodle.domain.AddGuardianDetailsParams;
+import uk.com.poodle.domain.ContactDetails;
 import uk.com.poodle.service.GuardianService;
 
 import java.util.List;
@@ -82,6 +83,7 @@ class GuardianControllerTest {
     private static Stream<Arguments> invalidAddGuardianDetailsParams() {
         return Stream.of(
             Arguments.of(AddGuardianDetailsParams.builder().build()),
+            Arguments.of(buildValidAddGuardianDetailsParams().withContactDetails(null)),
             Arguments.of(buildValidAddGuardianDetailsParams().withFirstname(null)),
             Arguments.of(buildValidAddGuardianDetailsParams().withFirstname("")),
             Arguments.of(buildValidAddGuardianDetailsParams().withFirstname(" ")),
@@ -96,6 +98,9 @@ class GuardianControllerTest {
 
     private static AddGuardianDetailsParams buildValidAddGuardianDetailsParams() {
         return AddGuardianDetailsParams.builder()
+            .contactDetails(ContactDetails.builder()
+                .mobilePhone("07123456789")
+                .build())
             .dob(PATIENT_DOB)
             .firstname(PATIENT_FIRSTNAME)
             .lastname(PATIENT_LASTNAME)

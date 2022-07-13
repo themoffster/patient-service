@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.com.poodle.data.AppointmentEntity;
 import uk.com.poodle.data.AppointmentRepository;
+import uk.com.poodle.domain.ContactDetails;
+import uk.com.poodle.domain.Guardian;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,6 +27,7 @@ public class AppointmentReminderService {
     private final AppointmentRepository appointmentRepository;
     private final MailService mailService;
     private final PatientService patientService;
+    private final GuardianService guardianService;
 
     @Transactional
     @Scheduled(cron = "${service.scheduler.appointment-reminder.cron}")
@@ -47,10 +50,11 @@ public class AppointmentReminderService {
     }
 
     private void sendReminder(AppointmentEntity appointment) {
-        var patient = patientService.getPatient(appointment.getPatientId()).orElseThrow();
-        var emailAddress = patient.getContactDetails().getEmail();
-        log.info("Sending reminder email to {}.", emailAddress);
-        mailService.send(emailAddress, SUBJECT, buildEmailContent(appointment));
+        var emailAddress = guardianService.getGuardians(appointment.getPatientId()).stream()
+            .map(Guardian::getContactDetails)
+            .map(ContactDetails::getEmail).toList();
+        log.info("Sending reminder email(s) to {}.", String.join(",", emailAddress));
+        mailService.send(emailAddress.get(0), SUBJECT, buildEmailContent(appointment));
     }
 
     private String buildEmailContent(AppointmentEntity appointment) {

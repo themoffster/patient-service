@@ -17,6 +17,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
 
+import static javax.persistence.CascadeType.ALL;
+
 @With
 @Entity
 @Getter
@@ -32,6 +34,9 @@ public class GuardianEntity {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
+
+    @OneToOne(cascade = ALL, orphanRemoval = true)
+    private ContactDetailsEntity contactDetails;
 
     @Column(name = "dob")
     private LocalDate dob;

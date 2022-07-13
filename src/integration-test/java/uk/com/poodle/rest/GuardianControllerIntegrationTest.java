@@ -24,6 +24,7 @@ import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZO
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.skyscreamer.jsonassert.JSONCompareMode.STRICT;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -56,8 +57,9 @@ class GuardianControllerIntegrationTest {
             mapper.writeValueAsString(buildGuardian()),
             mapper.writeValueAsString(responseEntity.getBody()),
             new CustomComparator(
-                JSONCompareMode.STRICT,
-                new Customization("id", (o1, o2) -> true)));
+                STRICT,
+                new Customization("id", (o1, o2) -> true),
+                new Customization("contactDetails.id", (o1, o2) -> true)));
     }
 
     @TestWithData
@@ -74,6 +76,7 @@ class GuardianControllerIntegrationTest {
             mapper.writeValueAsString(guardian),
             new CustomComparator(
                 JSONCompareMode.STRICT,
-                new Customization("id", (o1, o2) -> true)));
+                new Customization("id", (o1, o2) -> true),
+                new Customization("contactDetails.id", (o1, o2) -> true)));
     }
 }

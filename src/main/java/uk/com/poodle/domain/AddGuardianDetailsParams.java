@@ -19,6 +19,9 @@ import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 public class AddGuardianDetailsParams {
 
     @NotNull
+    ContactDetails contactDetails;
+
+    @NotNull
     @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd")
     LocalDate dob;
 

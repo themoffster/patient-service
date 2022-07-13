@@ -1,6 +1,8 @@
 package uk.com.poodle.data;
 
 import static uk.com.poodle.Constants.APPOINTMENT_DATE_TIME;
+import static uk.com.poodle.Constants.CONTACT_DETAILS_EMAIL;
+import static uk.com.poodle.Constants.CONTACT_DETAILS_MOBILE_PHONE;
 import static uk.com.poodle.Constants.GUARDIAN_DOB;
 import static uk.com.poodle.Constants.GUARDIAN_FIRSTNAME;
 import static uk.com.poodle.Constants.GUARDIAN_LASTNAME;
@@ -47,6 +49,7 @@ public class EntityDataFactory {
     public static GuardianEntity buildGuardianEntity(String id) {
         return GuardianEntity.builder()
             .id(id)
+            .contactDetails(buildContactDetailsEntity())
             .dob(GUARDIAN_DOB)
             .firstname(GUARDIAN_FIRSTNAME)
             .lastname(GUARDIAN_LASTNAME)
@@ -60,6 +63,18 @@ public class EntityDataFactory {
         return RelationEntity.builder()
             .id(1L)
             .description(GUARDIAN_RELATION.name())
+            .build();
+    }
+
+    public static ContactDetailsEntity buildContactDetailsEntity() {
+        return buildContactDetailsEntity(null);
+    }
+
+    public static ContactDetailsEntity buildContactDetailsEntity(String id) {
+        return ContactDetailsEntity.builder()
+            .id(id)
+            .email(CONTACT_DETAILS_EMAIL)
+            .mobilePhone(CONTACT_DETAILS_MOBILE_PHONE)
             .build();
     }
 }
