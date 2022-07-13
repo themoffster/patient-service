@@ -18,6 +18,8 @@ import uk.com.poodle.service.AppointmentService;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static java.time.LocalDateTime.now;
+import static java.time.temporal.ChronoUnit.DAYS;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -35,6 +37,9 @@ class AppointmentControllerTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @Autowired
+    private ObjectMapper mapper;
 
     @MockBean
     private AppointmentService mockService;
@@ -73,7 +78,7 @@ class AppointmentControllerTest {
     @ParameterizedTest
     @MethodSource("invalidCreateAppointmentParams")
     void shouldReturnBadRequestWhenCreateAppointmentParamsAreInvalid(CreateAppointmentParams params) throws Exception {
-        var json = new ObjectMapper().writeValueAsString(params);
+        var json = mapper.writeValueAsString(params);
 
         mvc.perform(post("/patients/" + PATIENT_ID + "/appointments/create")
                 .contentType(APPLICATION_JSON)
@@ -83,7 +88,10 @@ class AppointmentControllerTest {
 
     private static Stream<Arguments> invalidCreateAppointmentParams() {
         return Stream.of(
-            Arguments.of(CreateAppointmentParams.builder().build())
+            Arguments.of(CreateAppointmentParams.builder().build()),
+            Arguments.of(CreateAppointmentParams.builder()
+                .dateTime(now().minus(1, DAYS))
+                .build())
         );
     }
 }
