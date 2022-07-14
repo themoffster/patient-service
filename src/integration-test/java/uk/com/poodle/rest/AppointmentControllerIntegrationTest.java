@@ -1,27 +1,15 @@
 package uk.com.poodle.rest;
 
-import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.com.poodle.config.EmbeddedDatabaseTestConfig;
 import uk.com.poodle.domain.Appointment;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
-import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static uk.com.poodle.Constants.APPOINTMENT_DATE_TIME;
@@ -31,15 +19,7 @@ import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddAppointmentNotesParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddAppointmentParams;
 
-@AutoConfigureWireMock(port = 0)
-@ExtendWith(SpringExtension.class)
-@Import(EmbeddedDatabaseTestConfig.class)
-@SpringBootTest(webEnvironment = RANDOM_PORT)
-@AutoConfigureEmbeddedDatabase(provider = ZONKY, refresh = AFTER_EACH_TEST_METHOD)
-class AppointmentControllerIntegrationTest {
-
-    @Autowired
-    private TestRestTemplate restTemplate;
+class AppointmentControllerIntegrationTest extends AbstractControllerIntegrationTest {
 
     @TestWithData
     void shouldAddAppointment() {
