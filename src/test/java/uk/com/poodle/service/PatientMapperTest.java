@@ -8,7 +8,9 @@ import java.lang.reflect.Modifier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static uk.com.poodle.Constants.EDUCATION_ESTABLISHMENT_ID;
 import static uk.com.poodle.Constants.PATIENT_ID;
+import static uk.com.poodle.data.EntityDataFactory.buildEducationEstablishmentEntity;
 import static uk.com.poodle.data.EntityDataFactory.buildPatientEntity;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddPatientParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildPatient;
@@ -32,7 +34,7 @@ class PatientMapperTest {
 
     @Test
     void shouldMapAddPatientParams() {
-        var patient = map(buildAddPatientParams());
+        var patient = map(buildAddPatientParams(), buildEducationEstablishmentEntity(EDUCATION_ESTABLISHMENT_ID));
         assertEquals(buildPatientEntity(), patient);
     }
 }

@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.com.poodle.Constants.APPOINTMENT_DATE_TIME;
 import static uk.com.poodle.data.EntityDataFactory.buildAppointmentEntity;
+import static uk.com.poodle.data.EntityDataFactory.buildEducationEstablishmentEntity;
 import static uk.com.poodle.data.EntityDataFactory.buildPatientEntity;
 import static uk.com.poodle.data.EntityDataFactory.buildRelationEntity;
 
@@ -38,24 +39,33 @@ class AppointmentRepositoryTest {
     @Autowired
     private RelationRepository relationRepository;
 
+    @Autowired
+    private EducationEstablishmentRepository educationEstablishmentRepository;
+
     @Mock
     private DateTimeProvider mockDateTimeProvider;
 
+    private EducationEstablishmentEntity educationEstablishmentEntity;
     private String patientId;
 
     @BeforeEach
     void setup() {
+        insertEducationEstablishment();
         insertRelation();
         insertPatient();
     }
 
     void insertPatient() {
-        var savedPatient = patientRepository.save(buildPatientEntity());
+        var savedPatient = patientRepository.save(buildPatientEntity().withEducationEstablishment(educationEstablishmentEntity));
         patientId = savedPatient.getId();
     }
 
     void insertRelation() {
         relationRepository.save(buildRelationEntity());
+    }
+
+    void insertEducationEstablishment() {
+        educationEstablishmentEntity = educationEstablishmentRepository.save(buildEducationEstablishmentEntity());
     }
 
     @Test

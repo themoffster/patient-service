@@ -46,6 +46,9 @@ public class PatientEntity {
     @Column(name = "dob")
     private LocalDate dob;
 
+    @OneToOne
+    private EducationEstablishmentEntity educationEstablishment;
+
     @Column(name = "firstname")
     private String firstname;
 

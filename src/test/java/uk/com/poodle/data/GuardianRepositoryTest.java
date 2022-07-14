@@ -9,6 +9,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static uk.com.poodle.data.EntityDataFactory.buildEducationEstablishmentEntity;
 import static uk.com.poodle.data.EntityDataFactory.buildGuardianEntity;
 import static uk.com.poodle.data.EntityDataFactory.buildPatientEntity;
 
@@ -23,14 +24,19 @@ class GuardianRepositoryTest {
     @Autowired
     private GuardianRepository guardianRepository;
 
+    @Autowired
+    private EducationEstablishmentRepository educationEstablishmentRepository;
+
     @Test
     void shouldFindAllByPatientId() {
-        var savedPatient = patientRepository.save(buildPatientEntity());
+        var educationEstablishment = educationEstablishmentRepository.save(buildEducationEstablishmentEntity());
+        var savedPatient = patientRepository.save(buildPatientEntity().withEducationEstablishment(educationEstablishment));
         var guardian = guardianRepository.save(buildGuardianEntity().withPatientId(savedPatient.getId()));
 
         var guardians = guardianRepository.findAllByPatientId(savedPatient.getId());
 
         assertEquals(1, guardians.size());
         assertEquals(guardian, guardians.get(0));
+        assertEquals(educationEstablishment, savedPatient.getEducationEstablishment());
     }
 }

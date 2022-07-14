@@ -8,6 +8,21 @@
     "postcode": "EH12 1FG"
   },
   "dob": "2010-01-01",
+  "educationEstablishment": {
+    "address": {
+      "id": "33dc83d7-54cb-4abd-8faa-2bb8259d7a67",
+      "number": "1",
+      "street": "Road Street",
+      "town": "Edinburgh",
+      "postcode": "EH12 1FG"
+    },
+    "contactDetails": {
+      "email": "foo@bar.com",
+      "mobilePhone": "07123456789"
+    },
+    "name": "Glasgow Primary",
+    "type": "SCHOOL"
+  },
   "firstname": "Joe",
   "lastname": "Bloggs",
   "sex": "MALE"

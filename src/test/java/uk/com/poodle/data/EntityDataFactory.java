@@ -10,6 +10,9 @@ import static uk.com.poodle.Constants.APPOINTMENT_DATE_TIME;
 import static uk.com.poodle.Constants.CONTACT_DETAILS_EMAIL;
 import static uk.com.poodle.Constants.CONTACT_DETAILS_ID;
 import static uk.com.poodle.Constants.CONTACT_DETAILS_MOBILE_PHONE;
+import static uk.com.poodle.Constants.EDUCATION_ESTABLISHMENT_ID;
+import static uk.com.poodle.Constants.EDUCATION_ESTABLISHMENT_NAME;
+import static uk.com.poodle.Constants.EDUCATION_ESTABLISHMENT_TYPE;
 import static uk.com.poodle.Constants.GUARDIAN_DOB;
 import static uk.com.poodle.Constants.GUARDIAN_FIRSTNAME;
 import static uk.com.poodle.Constants.GUARDIAN_LASTNAME;
@@ -32,6 +35,7 @@ public class EntityDataFactory {
             .id(id)
             .address(buildAddressEntity(id == null ? null : ADDRESS_ID))
             .dob(PATIENT_DOB)
+            .educationEstablishment(buildEducationEstablishmentEntity(EDUCATION_ESTABLISHMENT_ID))
             .firstname(PATIENT_FIRSTNAME)
             .lastname(PATIENT_LASTNAME)
             .sex(PATIENT_SEX.getCode())
@@ -65,6 +69,20 @@ public class EntityDataFactory {
             .relation(buildRelationEntity())
             .patientId(PATIENT_ID)
             .sex(GUARDIAN_SEX.getCode())
+            .build();
+    }
+
+    public static EducationEstablishmentEntity buildEducationEstablishmentEntity() {
+        return buildEducationEstablishmentEntity(null);
+    }
+
+    public static EducationEstablishmentEntity buildEducationEstablishmentEntity(String id) {
+        return EducationEstablishmentEntity.builder()
+            .id(id)
+            .address(buildAddressEntity(id == null ? null : ADDRESS_ID))
+            .contactDetails(buildContactDetailsEntity(id == null ? null : CONTACT_DETAILS_ID))
+            .name(EDUCATION_ESTABLISHMENT_NAME)
+            .type(EDUCATION_ESTABLISHMENT_TYPE)
             .build();
     }
 

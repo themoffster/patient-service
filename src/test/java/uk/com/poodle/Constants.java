@@ -1,11 +1,13 @@
 package uk.com.poodle;
 
+import uk.com.poodle.domain.EducationEstablishmentType;
 import uk.com.poodle.domain.Relation;
 import uk.com.poodle.domain.Sex;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static uk.com.poodle.domain.EducationEstablishmentType.SCHOOL;
 import static uk.com.poodle.domain.Relation.PARENT;
 import static uk.com.poodle.domain.Sex.FEMALE;
 import static uk.com.poodle.domain.Sex.MALE;
@@ -27,6 +29,10 @@ public class Constants {
     public static final String CONTACT_DETAILS_EMAIL = "foo@bar.com";
     public static final String CONTACT_DETAILS_MOBILE_PHONE = "07123456789";
 
+    public static final String EDUCATION_ESTABLISHMENT_ID = "1468967e-5ee7-4cfe-81df-794cfd65f8a2";
+    public static final String EDUCATION_ESTABLISHMENT_NAME = "Glasgow Primary";
+    public static final EducationEstablishmentType EDUCATION_ESTABLISHMENT_TYPE = SCHOOL;
+
     public static final String GUARDIAN_ID = "72181737-7c07-4183-8f1c-9a181eec3006";
     public static final LocalDate GUARDIAN_DOB = LocalDate.of(1980, 6, 1);
     public static final String GUARDIAN_FIRSTNAME = "Jane";
@@ -39,4 +45,5 @@ public class Constants {
     public static final String PATIENT_FIRSTNAME = "Joe";
     public static final String PATIENT_LASTNAME = "Bloggs";
     public static final Sex PATIENT_SEX = MALE;
+
 }

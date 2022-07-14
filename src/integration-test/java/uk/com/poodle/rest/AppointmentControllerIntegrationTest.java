@@ -1,5 +1,11 @@
 package uk.com.poodle.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.json.JSONException;
+import org.skyscreamer.jsonassert.Customization;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import uk.com.poodle.domain.Appointment;
 
 import java.time.LocalDateTime;
@@ -18,19 +24,24 @@ import static uk.com.poodle.Constants.APPOINTMENT_NOTES;
 import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddAppointmentNotesParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddAppointmentParams;
+import static uk.com.poodle.domain.DomainDataFactory.buildAppointment;
 
 class AppointmentControllerIntegrationTest extends AbstractControllerIntegrationTest {
 
     @TestWithData
-    void shouldAddAppointment() {
+    void shouldAddAppointment() throws JsonProcessingException, JSONException {
         var payload = buildAddAppointmentParams();
         var responseEntity = restTemplate.postForEntity("/patients/{patientId}/appointments/add", payload, Appointment.class, Map.of("patientId", PATIENT_ID));
 
         assertEquals(CREATED, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
         assertNotNull(responseEntity.getBody().getId());
-        assertEquals(APPOINTMENT_DATE_TIME, responseEntity.getBody().getDateTime());
-        assertEquals(PATIENT_ID, responseEntity.getBody().getPatientId());
+        JSONAssert.assertEquals(
+            mapper.writeValueAsString(buildAppointment()),
+            mapper.writeValueAsString(responseEntity.getBody()),
+            new CustomComparator(
+                JSONCompareMode.STRICT,
+                new Customization("id", (o1, o2) -> true)));
     }
 
     @TestWithData

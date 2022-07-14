@@ -24,6 +24,8 @@ public class Patient {
     @JsonFormat(shape = STRING)
     LocalDate dob;
 
+    EducationEstablishment educationEstablishment;
+
     String firstname;
 
     List<Guardian> guardians;

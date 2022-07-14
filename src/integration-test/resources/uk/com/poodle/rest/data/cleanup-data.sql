@@ -5,3 +5,4 @@ delete from relation;
 delete from relation;
 delete from contact_details;
 delete from address;
+delete from education_establishment;

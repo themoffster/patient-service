@@ -12,11 +12,17 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.com.poodle.Constants.EDUCATION_ESTABLISHMENT_ID;
 import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.data.EntityDataFactory.buildPatientEntity;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddPatientParams;
+import static uk.com.poodle.domain.DomainDataFactory.buildEducationEstablishment;
 import static uk.com.poodle.domain.DomainDataFactory.buildPatient;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,6 +30,9 @@ class PatientServiceTest {
 
     @Mock
     private PatientRepository mockRepository;
+
+    @Mock
+    private EducationEstablishmentService mockEducationEstablishmentService;
 
     @InjectMocks
     private PatientService service;
@@ -33,11 +42,22 @@ class PatientServiceTest {
         var expected = buildPatient();
         var entity = buildPatientEntity();
         var params = buildAddPatientParams();
+        when(mockEducationEstablishmentService.getEducationEstablishment(EDUCATION_ESTABLISHMENT_ID)).thenReturn(Optional.of(buildEducationEstablishment()));
         when(mockRepository.save(entity)).thenReturn(buildPatientEntity(PATIENT_ID));
 
         var actual = service.addPatient(params);
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentExceptionAddingPatientIfEducationEstablishmentDoesNotExist() {
+        var params = buildAddPatientParams();
+        when(mockEducationEstablishmentService.getEducationEstablishment(EDUCATION_ESTABLISHMENT_ID)).thenReturn(Optional.empty());
+
+        assertThrows(IllegalArgumentException.class, () -> service.addPatient(params));
+
+        verify(mockRepository, never()).save(any());
     }
 
     @Test

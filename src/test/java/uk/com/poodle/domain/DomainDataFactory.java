@@ -13,6 +13,9 @@ import static uk.com.poodle.Constants.APPOINTMENT_NOTES;
 import static uk.com.poodle.Constants.CONTACT_DETAILS_EMAIL;
 import static uk.com.poodle.Constants.CONTACT_DETAILS_ID;
 import static uk.com.poodle.Constants.CONTACT_DETAILS_MOBILE_PHONE;
+import static uk.com.poodle.Constants.EDUCATION_ESTABLISHMENT_ID;
+import static uk.com.poodle.Constants.EDUCATION_ESTABLISHMENT_NAME;
+import static uk.com.poodle.Constants.EDUCATION_ESTABLISHMENT_TYPE;
 import static uk.com.poodle.Constants.GUARDIAN_DOB;
 import static uk.com.poodle.Constants.GUARDIAN_FIRSTNAME;
 import static uk.com.poodle.Constants.GUARDIAN_ID;
@@ -32,6 +35,7 @@ public class DomainDataFactory {
             .id(PATIENT_ID)
             .address(buildAddress(ADDRESS_ID))
             .dob(PATIENT_DOB)
+            .educationEstablishment(buildEducationEstablishment())
             .firstname(PATIENT_FIRSTNAME)
             .lastname(PATIENT_LASTNAME)
             .sex(PATIENT_SEX)
@@ -42,6 +46,7 @@ public class DomainDataFactory {
         return AddPatientParams.builder()
             .address(buildAddress())
             .dob(PATIENT_DOB)
+            .educationEstablishmentId(EDUCATION_ESTABLISHMENT_ID)
             .firstname(PATIENT_FIRSTNAME)
             .lastname(PATIENT_LASTNAME)
             .sex(PATIENT_SEX)
@@ -53,6 +58,16 @@ public class DomainDataFactory {
             .id(APPOINTMENT_ID)
             .dateTime(APPOINTMENT_DATE_TIME)
             .patientId(PATIENT_ID)
+            .build();
+    }
+
+    public static EducationEstablishment buildEducationEstablishment() {
+        return EducationEstablishment.builder()
+            .id(EDUCATION_ESTABLISHMENT_ID)
+            .address(buildAddress(ADDRESS_ID))
+            .contactDetails(buildContactDetails(CONTACT_DETAILS_ID))
+            .name(EDUCATION_ESTABLISHMENT_NAME)
+            .type(EDUCATION_ESTABLISHMENT_TYPE)
             .build();
     }
 
@@ -90,6 +105,15 @@ public class DomainDataFactory {
             .lastname(GUARDIAN_LASTNAME)
             .relation(GUARDIAN_RELATION)
             .sex(GUARDIAN_SEX)
+            .build();
+    }
+
+    public static AddEducationEstablishmentParams buildAddEducationEstablishmentParams() {
+        return AddEducationEstablishmentParams.builder()
+            .address(buildAddress())
+            .contactDetails(buildContactDetails())
+            .name(EDUCATION_ESTABLISHMENT_NAME)
+            .type(EDUCATION_ESTABLISHMENT_TYPE)
             .build();
     }
 

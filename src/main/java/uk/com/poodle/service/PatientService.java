@@ -20,10 +20,15 @@ import static uk.com.poodle.service.PatientMapper.map;
 public class PatientService {
 
     private final PatientRepository repository;
+    private final EducationEstablishmentService educationEstablishmentService;
 
     public Patient addPatient(AddPatientParams params) {
+        var educationEstablishment = Optional.of(params.getEducationEstablishmentId())
+            .flatMap(educationEstablishmentService::getEducationEstablishment)
+            .map(EducationEstablishmentMapper::map)
+            .orElseThrow(() -> new IllegalArgumentException("Education establishment not found."));
         log.info("Adding patient {} {}.", params.getFirstname(), params.getLastname());
-        var entity = map(params);
+        var entity = map(params, educationEstablishment);
         var savedEntity = repository.save(entity);
         log.info("Added patient record {} for {} {}.", savedEntity.getId(), savedEntity.getFirstname(), savedEntity.getLastname());
         return map(savedEntity);

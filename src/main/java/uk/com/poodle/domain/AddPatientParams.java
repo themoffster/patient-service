@@ -28,6 +28,9 @@ public class AddPatientParams {
     LocalDate dob;
 
     @NotBlank
+    String educationEstablishmentId;
+
+    @NotBlank
     String firstname;
 
     @NotBlank

@@ -39,7 +39,7 @@ class GuardianServiceTest {
     @Test
     void shouldAddGuardianToPatient() {
         when(mockPatientService.getPatient(PATIENT_ID)).thenReturn(Optional.of(buildPatient()));
-        when(mockRepository.save(buildGuardianEntity(null))).thenReturn(buildGuardianEntity(GUARDIAN_ID));
+        when(mockRepository.save(buildGuardianEntity())).thenReturn(buildGuardianEntity(GUARDIAN_ID));
 
         var guardian = service.addGuardian(PATIENT_ID, buildAddGuardianDetailsParams());
 

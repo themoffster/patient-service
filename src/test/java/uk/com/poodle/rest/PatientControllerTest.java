@@ -109,13 +109,16 @@ class PatientControllerTest {
             Arguments.of(buildAddPatientParams().withAddress(buildAddress().withPostcode(null))),
             Arguments.of(buildAddPatientParams().withAddress(buildAddress().withPostcode(""))),
             Arguments.of(buildAddPatientParams().withAddress(buildAddress().withPostcode(" "))),
+            Arguments.of(buildAddPatientParams().withDob(null)),
+            Arguments.of(buildAddPatientParams().withEducationEstablishmentId(null)),
+            Arguments.of(buildAddPatientParams().withEducationEstablishmentId("")),
+            Arguments.of(buildAddPatientParams().withEducationEstablishmentId(" ")),
             Arguments.of(buildAddPatientParams().withFirstname(null)),
             Arguments.of(buildAddPatientParams().withFirstname("")),
             Arguments.of(buildAddPatientParams().withFirstname(" ")),
             Arguments.of(buildAddPatientParams().withLastname(null)),
             Arguments.of(buildAddPatientParams().withLastname("")),
             Arguments.of(buildAddPatientParams().withLastname(" ")),
-            Arguments.of(buildAddPatientParams().withDob(null)),
             Arguments.of(buildAddPatientParams().withSex(null))
         );
     }

@@ -2,7 +2,6 @@ package uk.com.poodle.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONException;
-import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -21,7 +20,7 @@ import static uk.com.poodle.domain.DomainDataFactory.buildPatient;
 
 class PatientControllerIntegrationTest extends AbstractControllerIntegrationTest {
 
-    @Test
+    @TestWithData
     void shouldAddPatient() throws JsonProcessingException, JSONException {
         var payload = buildAddPatientParams();
         var responseEntity = restTemplate.postForEntity("/patients/add", payload, Patient.class);
