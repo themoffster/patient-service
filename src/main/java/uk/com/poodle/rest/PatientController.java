@@ -44,4 +44,9 @@ public class PatientController {
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/education-establishment/{educationEstablishmentId}")
+    public ResponseEntity<List<Patient>> getAllPatientsByEducationEstablishment(@PathVariable("educationEstablishmentId") String id) {
+        return ok(service.getAllPatientsByEducationEstablishment(id));
+    }
 }

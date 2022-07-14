@@ -87,4 +87,14 @@ class PatientServiceTest {
 
         assertTrue(patientOptional.isEmpty());
     }
+
+    @Test
+    void getAllPatientsByEducationEstablishment() {
+        when(mockRepository.findAllByEducationEstablishmentId(EDUCATION_ESTABLISHMENT_ID)).thenReturn(List.of(buildPatientEntity(PATIENT_ID)));
+
+        var patients = service.getAllPatientsByEducationEstablishment(EDUCATION_ESTABLISHMENT_ID);
+
+        assertEquals(1, patients.size());
+        assertEquals(buildPatient(), patients.get(0));
+    }
 }

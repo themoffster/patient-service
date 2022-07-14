@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
+import static uk.com.poodle.Constants.EDUCATION_ESTABLISHMENT_ID;
 import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddPatientParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildPatient;
@@ -55,5 +56,16 @@ class PatientControllerIntegrationTest extends AbstractControllerIntegrationTest
 
         assertEquals(OK, responseEntity.getStatusCode());
         assertEquals(buildPatient(), responseEntity.getBody());
+    }
+
+    @TestWithData
+    void shouldRetrieveAllPatientsByEducationEstablishment() {
+        var urlTemplate = "/patients/education-establishment/{educationEstablishmentId}";
+        var responseEntity = restTemplate.getForEntity(urlTemplate, Patient[].class, Map.of("educationEstablishmentId", EDUCATION_ESTABLISHMENT_ID));
+
+        assertEquals(OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+        assertEquals(1, responseEntity.getBody().length);
+        assertEquals(buildPatient(), responseEntity.getBody()[0]);
     }
 }

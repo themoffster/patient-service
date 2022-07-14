@@ -50,4 +50,11 @@ public class PatientService {
                 return Optional.empty();
             });
     }
+
+    public List<Patient> getAllPatientsByEducationEstablishment(String educationEstablishmentId) {
+        log.info("Retrieving all patients.");
+        return repository.findAllByEducationEstablishmentId(educationEstablishmentId).stream()
+            .map(PatientMapper::map)
+            .collect(toList());
+    }
 }

@@ -25,6 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.com.poodle.Constants.EDUCATION_ESTABLISHMENT_ID;
 import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddPatientParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddress;
@@ -91,6 +92,15 @@ class PatientControllerTest {
                 .contentType(APPLICATION_JSON)
                 .content(json))
             .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void getAllPatientsByEducationEstablishment() throws Exception {
+        when(mockService.getAllPatientsByEducationEstablishment(EDUCATION_ESTABLISHMENT_ID)).thenReturn(List.of(buildPatient()));
+
+        mvc.perform(get("/patients/education-establishment/" + EDUCATION_ESTABLISHMENT_ID))
+            .andExpect(status().isOk())
+            .andExpect(content().json(fileToString("patients.json", getClass())));
     }
 
     private static Stream<Arguments> invalidAddPatientParams() {

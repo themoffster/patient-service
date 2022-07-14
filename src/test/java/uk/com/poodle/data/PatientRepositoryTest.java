@@ -10,6 +10,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static uk.com.poodle.data.EntityDataFactory.buildEducationEstablishmentEntity;
+import static uk.com.poodle.data.EntityDataFactory.buildPatientEntity;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
@@ -17,16 +19,31 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class PatientRepositoryTest {
 
     @Autowired
-    private PatientRepository repository;
+    private PatientRepository patientRepository;
+
+    @Autowired
+    private EducationEstablishmentRepository educationEstablishmentRepository;
 
     @Test
     void shouldFindByPatientId() {
-        var entity = EntityDataFactory.buildPatientEntity();
-        repository.save(entity);
+        var entity = buildPatientEntity();
+        patientRepository.save(entity);
 
-        var actual = repository.findById(entity.getId());
+        var actual = patientRepository.findById(entity.getId());
 
         assertTrue(actual.isPresent());
         assertEquals(entity, actual.get());
+    }
+
+    @Test
+    void shouldFindAllByEducationEstablishmentId() {
+        var educationEstablishment = educationEstablishmentRepository.save(buildEducationEstablishmentEntity());
+        var entity = buildPatientEntity().withEducationEstablishment(educationEstablishment);
+        patientRepository.save(entity);
+
+        var patients = patientRepository.findAllByEducationEstablishmentId(educationEstablishment.getId());
+
+        assertEquals(1, patients.size());
+        assertTrue(patients.contains(entity));
     }
 }
