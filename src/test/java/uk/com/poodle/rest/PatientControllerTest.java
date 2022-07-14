@@ -25,11 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static uk.com.poodle.Constants.PATIENT_DOB;
-import static uk.com.poodle.Constants.PATIENT_FIRSTNAME;
 import static uk.com.poodle.Constants.PATIENT_ID;
-import static uk.com.poodle.Constants.PATIENT_LASTNAME;
-import static uk.com.poodle.Constants.PATIENT_SEX;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddPatientParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildPatient;
 import static uk.com.poodle.utils.FileUtils.fileToString;
@@ -99,23 +95,14 @@ class PatientControllerTest {
     private static Stream<Arguments> invalidAddPatientParams() {
         return Stream.of(
             Arguments.of(AddPatientParams.builder().build()),
-            Arguments.of(buildValidAddPatientParams().withFirstname(null)),
-            Arguments.of(buildValidAddPatientParams().withFirstname("")),
-            Arguments.of(buildValidAddPatientParams().withFirstname(" ")),
-            Arguments.of(buildValidAddPatientParams().withLastname(null)),
-            Arguments.of(buildValidAddPatientParams().withLastname("")),
-            Arguments.of(buildValidAddPatientParams().withLastname(" ")),
-            Arguments.of(buildValidAddPatientParams().withDob(null)),
-            Arguments.of(buildValidAddPatientParams().withSex(null))
+            Arguments.of(buildAddPatientParams().withFirstname(null)),
+            Arguments.of(buildAddPatientParams().withFirstname("")),
+            Arguments.of(buildAddPatientParams().withFirstname(" ")),
+            Arguments.of(buildAddPatientParams().withLastname(null)),
+            Arguments.of(buildAddPatientParams().withLastname("")),
+            Arguments.of(buildAddPatientParams().withLastname(" ")),
+            Arguments.of(buildAddPatientParams().withDob(null)),
+            Arguments.of(buildAddPatientParams().withSex(null))
         );
-    }
-
-    private static AddPatientParams buildValidAddPatientParams() {
-        return AddPatientParams.builder()
-            .dob(PATIENT_DOB)
-            .firstname(PATIENT_FIRSTNAME)
-            .lastname(PATIENT_LASTNAME)
-            .sex(PATIENT_SEX)
-            .build();
     }
 }

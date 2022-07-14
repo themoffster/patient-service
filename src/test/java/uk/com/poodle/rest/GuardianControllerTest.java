@@ -13,7 +13,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.com.poodle.domain.AddGuardianDetailsParams;
-import uk.com.poodle.domain.ContactDetails;
 import uk.com.poodle.service.GuardianService;
 
 import java.util.List;
@@ -25,12 +24,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static uk.com.poodle.Constants.PATIENT_DOB;
-import static uk.com.poodle.Constants.PATIENT_FIRSTNAME;
 import static uk.com.poodle.Constants.PATIENT_ID;
-import static uk.com.poodle.Constants.PATIENT_LASTNAME;
-import static uk.com.poodle.Constants.PATIENT_SEX;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddGuardianDetailsParams;
+import static uk.com.poodle.domain.DomainDataFactory.buildContactDetails;
 import static uk.com.poodle.domain.DomainDataFactory.buildGuardian;
 import static uk.com.poodle.utils.FileUtils.fileToString;
 
@@ -83,28 +79,17 @@ class GuardianControllerTest {
     private static Stream<Arguments> invalidAddGuardianDetailsParams() {
         return Stream.of(
             Arguments.of(AddGuardianDetailsParams.builder().build()),
-            Arguments.of(buildValidAddGuardianDetailsParams().withContactDetails(null)),
-            Arguments.of(buildValidAddGuardianDetailsParams().withFirstname(null)),
-            Arguments.of(buildValidAddGuardianDetailsParams().withFirstname("")),
-            Arguments.of(buildValidAddGuardianDetailsParams().withFirstname(" ")),
-            Arguments.of(buildValidAddGuardianDetailsParams().withLastname(null)),
-            Arguments.of(buildValidAddGuardianDetailsParams().withLastname("")),
-            Arguments.of(buildValidAddGuardianDetailsParams().withLastname(" ")),
-            Arguments.of(buildValidAddGuardianDetailsParams().withDob(null)),
-            Arguments.of(buildValidAddGuardianDetailsParams().withRelation(null)),
-            Arguments.of(buildValidAddGuardianDetailsParams().withSex(null))
+            Arguments.of(buildAddGuardianDetailsParams().withContactDetails(null)),
+            Arguments.of(buildAddGuardianDetailsParams().withFirstname(null)),
+            Arguments.of(buildAddGuardianDetailsParams().withFirstname("")),
+            Arguments.of(buildAddGuardianDetailsParams().withFirstname(" ")),
+            Arguments.of(buildAddGuardianDetailsParams().withLastname(null)),
+            Arguments.of(buildAddGuardianDetailsParams().withLastname("")),
+            Arguments.of(buildAddGuardianDetailsParams().withLastname(" ")),
+            Arguments.of(buildAddGuardianDetailsParams().withDob(null)),
+            Arguments.of(buildAddGuardianDetailsParams().withRelation(null)),
+            Arguments.of(buildAddGuardianDetailsParams().withSex(null)),
+            Arguments.of(buildAddGuardianDetailsParams().withContactDetails(buildContactDetails().withEmail("not@email")))
         );
-    }
-
-    private static AddGuardianDetailsParams buildValidAddGuardianDetailsParams() {
-        return AddGuardianDetailsParams.builder()
-            .contactDetails(ContactDetails.builder()
-                .mobilePhone("07123456789")
-                .build())
-            .dob(PATIENT_DOB)
-            .firstname(PATIENT_FIRSTNAME)
-            .lastname(PATIENT_LASTNAME)
-            .sex(PATIENT_SEX)
-            .build();
     }
 }

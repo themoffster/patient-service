@@ -6,6 +6,7 @@ import lombok.Value;
 import lombok.With;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 @Jacksonized
 public class AddGuardianDetailsParams {
 
+    @Valid
     @NotNull
     ContactDetails contactDetails;
 
