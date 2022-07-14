@@ -1,4 +1,10 @@
 {
+  "address": {
+    "number": "1",
+    "street": "Road Street",
+    "town": "Edinburgh",
+    "postcode": "EH12 1FG"
+  },
   "dob": "2010-01-01",
   "firstname": "Joe",
   "lastname": "Bloggs",

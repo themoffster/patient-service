@@ -12,6 +12,7 @@ class PatientMapper {
     public static Patient map(PatientEntity entity) {
         return Patient.builder()
             .id(entity.getId())
+            .address(AddressMapper.map(entity.getAddress()))
             .dob(entity.getDob())
             .firstname(entity.getFirstname())
             .lastname(entity.getLastname())
@@ -21,6 +22,7 @@ class PatientMapper {
 
     public static PatientEntity map(AddPatientParams params) {
         return PatientEntity.builder()
+            .address(AddressMapper.map(params.getAddress()))
             .dob(params.getDob())
             .firstname(params.getFirstname())
             .lastname(params.getLastname())

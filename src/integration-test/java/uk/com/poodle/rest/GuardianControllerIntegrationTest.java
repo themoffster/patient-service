@@ -59,6 +59,7 @@ class GuardianControllerIntegrationTest {
             new CustomComparator(
                 STRICT,
                 new Customization("id", (o1, o2) -> true),
+                new Customization("address.id", (o1, o2) -> true),
                 new Customization("contactDetails.id", (o1, o2) -> true)));
     }
 

@@ -1,9 +1,17 @@
 package uk.com.poodle.domain;
 
+import static java.lang.String.join;
+import static uk.com.poodle.Constants.ADDRESS_ID;
+import static uk.com.poodle.Constants.ADDRESS_INBOUND_POSTCODE;
+import static uk.com.poodle.Constants.ADDRESS_NUMBER;
+import static uk.com.poodle.Constants.ADDRESS_OUTBOUND_POSTCODE;
+import static uk.com.poodle.Constants.ADDRESS_STREET;
+import static uk.com.poodle.Constants.ADDRESS_TOWN;
 import static uk.com.poodle.Constants.APPOINTMENT_DATE_TIME;
 import static uk.com.poodle.Constants.APPOINTMENT_ID;
 import static uk.com.poodle.Constants.APPOINTMENT_NOTES;
 import static uk.com.poodle.Constants.CONTACT_DETAILS_EMAIL;
+import static uk.com.poodle.Constants.CONTACT_DETAILS_ID;
 import static uk.com.poodle.Constants.CONTACT_DETAILS_MOBILE_PHONE;
 import static uk.com.poodle.Constants.GUARDIAN_DOB;
 import static uk.com.poodle.Constants.GUARDIAN_FIRSTNAME;
@@ -22,6 +30,7 @@ public class DomainDataFactory {
     public static Patient buildPatient() {
         return Patient.builder()
             .id(PATIENT_ID)
+            .address(buildAddress(ADDRESS_ID))
             .dob(PATIENT_DOB)
             .firstname(PATIENT_FIRSTNAME)
             .lastname(PATIENT_LASTNAME)
@@ -31,6 +40,7 @@ public class DomainDataFactory {
 
     public static AddPatientParams buildAddPatientParams() {
         return AddPatientParams.builder()
+            .address(buildAddress())
             .dob(PATIENT_DOB)
             .firstname(PATIENT_FIRSTNAME)
             .lastname(PATIENT_LASTNAME)
@@ -61,7 +71,8 @@ public class DomainDataFactory {
     public static Guardian buildGuardian() {
         return Guardian.builder()
             .id(GUARDIAN_ID)
-            .contactDetails(buildContactDetails())
+            .address(buildAddress(ADDRESS_ID))
+            .contactDetails(buildContactDetails(CONTACT_DETAILS_ID))
             .dob(GUARDIAN_DOB)
             .firstname(GUARDIAN_FIRSTNAME)
             .lastname(GUARDIAN_LASTNAME)
@@ -72,6 +83,7 @@ public class DomainDataFactory {
 
     public static AddGuardianDetailsParams buildAddGuardianDetailsParams() {
         return AddGuardianDetailsParams.builder()
+            .address(buildAddress())
             .contactDetails(buildContactDetails())
             .dob(GUARDIAN_DOB)
             .firstname(GUARDIAN_FIRSTNAME)
@@ -90,6 +102,20 @@ public class DomainDataFactory {
             .id(id)
             .email(CONTACT_DETAILS_EMAIL)
             .mobilePhone(CONTACT_DETAILS_MOBILE_PHONE)
+            .build();
+    }
+
+    public static Address buildAddress() {
+        return buildAddress(null);
+    }
+
+    public static Address buildAddress(String id) {
+        return Address.builder()
+            .id(id)
+            .number(ADDRESS_NUMBER)
+            .street(ADDRESS_STREET)
+            .town(ADDRESS_TOWN)
+            .postcode(join(" ", ADDRESS_OUTBOUND_POSTCODE, ADDRESS_INBOUND_POSTCODE))
             .build();
     }
 }

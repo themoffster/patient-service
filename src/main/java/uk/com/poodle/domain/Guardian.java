@@ -16,6 +16,8 @@ public class Guardian {
 
     String id;
 
+    Address address;
+
     ContactDetails contactDetails;
 
     @JsonFormat(shape = STRING)

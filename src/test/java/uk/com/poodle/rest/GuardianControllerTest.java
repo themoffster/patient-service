@@ -26,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddGuardianDetailsParams;
+import static uk.com.poodle.domain.DomainDataFactory.buildAddress;
 import static uk.com.poodle.domain.DomainDataFactory.buildContactDetails;
 import static uk.com.poodle.domain.DomainDataFactory.buildGuardian;
 import static uk.com.poodle.utils.FileUtils.fileToString;
@@ -79,6 +80,18 @@ class GuardianControllerTest {
     private static Stream<Arguments> invalidAddGuardianDetailsParams() {
         return Stream.of(
             Arguments.of(AddGuardianDetailsParams.builder().build()),
+            Arguments.of(buildAddGuardianDetailsParams().withAddress(null)),
+            Arguments.of(buildAddGuardianDetailsParams().withAddress(buildAddress().withNumber(""))),
+            Arguments.of(buildAddGuardianDetailsParams().withAddress(buildAddress().withNumber(" "))),
+            Arguments.of(buildAddGuardianDetailsParams().withAddress(buildAddress().withStreet(null))),
+            Arguments.of(buildAddGuardianDetailsParams().withAddress(buildAddress().withStreet(""))),
+            Arguments.of(buildAddGuardianDetailsParams().withAddress(buildAddress().withStreet(" "))),
+            Arguments.of(buildAddGuardianDetailsParams().withAddress(buildAddress().withTown(null))),
+            Arguments.of(buildAddGuardianDetailsParams().withAddress(buildAddress().withTown(""))),
+            Arguments.of(buildAddGuardianDetailsParams().withAddress(buildAddress().withTown(" "))),
+            Arguments.of(buildAddGuardianDetailsParams().withAddress(buildAddress().withPostcode(null))),
+            Arguments.of(buildAddGuardianDetailsParams().withAddress(buildAddress().withPostcode(""))),
+            Arguments.of(buildAddGuardianDetailsParams().withAddress(buildAddress().withPostcode(" "))),
             Arguments.of(buildAddGuardianDetailsParams().withContactDetails(null)),
             Arguments.of(buildAddGuardianDetailsParams().withFirstname(null)),
             Arguments.of(buildAddGuardianDetailsParams().withFirstname("")),

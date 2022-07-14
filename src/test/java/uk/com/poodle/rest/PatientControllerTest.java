@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.com.poodle.Constants.PATIENT_ID;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddPatientParams;
+import static uk.com.poodle.domain.DomainDataFactory.buildAddress;
 import static uk.com.poodle.domain.DomainDataFactory.buildPatient;
 import static uk.com.poodle.utils.FileUtils.fileToString;
 
@@ -95,6 +96,19 @@ class PatientControllerTest {
     private static Stream<Arguments> invalidAddPatientParams() {
         return Stream.of(
             Arguments.of(AddPatientParams.builder().build()),
+            Arguments.of(buildAddPatientParams().withAddress(null)),
+            Arguments.of(buildAddPatientParams().withAddress(buildAddress().withNumber(null))),
+            Arguments.of(buildAddPatientParams().withAddress(buildAddress().withNumber(""))),
+            Arguments.of(buildAddPatientParams().withAddress(buildAddress().withNumber(" "))),
+            Arguments.of(buildAddPatientParams().withAddress(buildAddress().withStreet(null))),
+            Arguments.of(buildAddPatientParams().withAddress(buildAddress().withStreet(""))),
+            Arguments.of(buildAddPatientParams().withAddress(buildAddress().withStreet(" "))),
+            Arguments.of(buildAddPatientParams().withAddress(buildAddress().withTown(null))),
+            Arguments.of(buildAddPatientParams().withAddress(buildAddress().withTown(""))),
+            Arguments.of(buildAddPatientParams().withAddress(buildAddress().withTown(" "))),
+            Arguments.of(buildAddPatientParams().withAddress(buildAddress().withPostcode(null))),
+            Arguments.of(buildAddPatientParams().withAddress(buildAddress().withPostcode(""))),
+            Arguments.of(buildAddPatientParams().withAddress(buildAddress().withPostcode(" "))),
             Arguments.of(buildAddPatientParams().withFirstname(null)),
             Arguments.of(buildAddPatientParams().withFirstname("")),
             Arguments.of(buildAddPatientParams().withFirstname(" ")),

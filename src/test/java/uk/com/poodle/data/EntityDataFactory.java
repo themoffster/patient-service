@@ -1,7 +1,14 @@
 package uk.com.poodle.data;
 
+import static uk.com.poodle.Constants.ADDRESS_ID;
+import static uk.com.poodle.Constants.ADDRESS_INBOUND_POSTCODE;
+import static uk.com.poodle.Constants.ADDRESS_NUMBER;
+import static uk.com.poodle.Constants.ADDRESS_OUTBOUND_POSTCODE;
+import static uk.com.poodle.Constants.ADDRESS_STREET;
+import static uk.com.poodle.Constants.ADDRESS_TOWN;
 import static uk.com.poodle.Constants.APPOINTMENT_DATE_TIME;
 import static uk.com.poodle.Constants.CONTACT_DETAILS_EMAIL;
+import static uk.com.poodle.Constants.CONTACT_DETAILS_ID;
 import static uk.com.poodle.Constants.CONTACT_DETAILS_MOBILE_PHONE;
 import static uk.com.poodle.Constants.GUARDIAN_DOB;
 import static uk.com.poodle.Constants.GUARDIAN_FIRSTNAME;
@@ -23,6 +30,7 @@ public class EntityDataFactory {
     public static PatientEntity buildPatientEntity(String id) {
         return PatientEntity.builder()
             .id(id)
+            .address(buildAddressEntity(id == null ? null : ADDRESS_ID))
             .dob(PATIENT_DOB)
             .firstname(PATIENT_FIRSTNAME)
             .lastname(PATIENT_LASTNAME)
@@ -49,7 +57,8 @@ public class EntityDataFactory {
     public static GuardianEntity buildGuardianEntity(String id) {
         return GuardianEntity.builder()
             .id(id)
-            .contactDetails(buildContactDetailsEntity())
+            .address(buildAddressEntity(id == null ? null : ADDRESS_ID))
+            .contactDetails(buildContactDetailsEntity(id == null ? null : CONTACT_DETAILS_ID))
             .dob(GUARDIAN_DOB)
             .firstname(GUARDIAN_FIRSTNAME)
             .lastname(GUARDIAN_LASTNAME)
@@ -75,6 +84,21 @@ public class EntityDataFactory {
             .id(id)
             .email(CONTACT_DETAILS_EMAIL)
             .mobilePhone(CONTACT_DETAILS_MOBILE_PHONE)
+            .build();
+    }
+
+    public static AddressEntity buildAddressEntity() {
+        return buildAddressEntity(null);
+    }
+
+    public static AddressEntity buildAddressEntity(String id) {
+        return AddressEntity.builder()
+            .id(id)
+            .inboundPostcode(ADDRESS_INBOUND_POSTCODE)
+            .number(ADDRESS_NUMBER)
+            .outboundPostcode(ADDRESS_OUTBOUND_POSTCODE)
+            .street(ADDRESS_STREET)
+            .town(ADDRESS_TOWN)
             .build();
     }
 }

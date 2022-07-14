@@ -6,6 +6,7 @@ import lombok.Value;
 import lombok.With;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -17,6 +18,10 @@ import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 @Builder
 @Jacksonized
 public class AddPatientParams {
+
+    @Valid
+    @NotNull
+    Address address;
 
     @NotNull
     @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd")

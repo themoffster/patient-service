@@ -35,6 +35,9 @@ public class GuardianEntity {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
+    @OneToOne(cascade = ALL)
+    private AddressEntity address;
+
     @OneToOne(cascade = ALL, orphanRemoval = true)
     private ContactDetailsEntity contactDetails;
 

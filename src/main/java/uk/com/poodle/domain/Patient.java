@@ -17,6 +17,8 @@ public class Patient {
 
     String id;
 
+    Address address;
+
     List<Appointment> appointments;
 
     @JsonFormat(shape = STRING)

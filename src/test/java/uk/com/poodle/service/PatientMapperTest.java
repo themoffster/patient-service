@@ -1,7 +1,6 @@
 package uk.com.poodle.service;
 
 import org.junit.jupiter.api.Test;
-import uk.com.poodle.data.EntityDataFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -34,6 +33,6 @@ class PatientMapperTest {
     @Test
     void shouldMapAddPatientParams() {
         var patient = map(buildAddPatientParams());
-        assertEquals(EntityDataFactory.buildPatientEntity(), patient);
+        assertEquals(buildPatientEntity(), patient);
     }
 }

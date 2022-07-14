@@ -6,7 +6,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import uk.com.poodle.data.EntityDataFactory;
 import uk.com.poodle.data.PatientRepository;
 
 import java.util.List;
@@ -32,9 +31,9 @@ class PatientServiceTest {
     @Test
     void shouldAddPatient() {
         var expected = buildPatient();
-        var entity = EntityDataFactory.buildPatientEntity();
+        var entity = buildPatientEntity();
         var params = buildAddPatientParams();
-        when(mockRepository.save(entity)).thenReturn(entity.withId(PATIENT_ID));
+        when(mockRepository.save(entity)).thenReturn(buildPatientEntity(PATIENT_ID));
 
         var actual = service.addPatient(params);
 

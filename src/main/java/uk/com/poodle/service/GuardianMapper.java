@@ -14,6 +14,7 @@ class GuardianMapper {
     public static Guardian map(GuardianEntity entity) {
         return Guardian.builder()
             .id(entity.getId())
+            .address(AddressMapper.map(entity.getAddress()))
             .contactDetails(ContactDetailsMapper.map(entity.getContactDetails()))
             .dob(entity.getDob())
             .firstname(entity.getFirstname())
@@ -26,6 +27,7 @@ class GuardianMapper {
     public static GuardianEntity map(String patientId, AddGuardianDetailsParams params) {
         var relation = Relation.valueOf(params.getRelation().name());
         return GuardianEntity.builder()
+            .address(AddressMapper.map(params.getAddress()))
             .contactDetails(ContactDetailsMapper.map(params.getContactDetails()))
             .dob(params.getDob())
             .firstname(params.getFirstname())

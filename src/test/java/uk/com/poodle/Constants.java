@@ -12,6 +12,13 @@ import static uk.com.poodle.domain.Sex.MALE;
 
 public class Constants {
 
+    public static final String ADDRESS_ID = "33dc83d7-54cb-4abd-8faa-2bb8259d7a67";
+    public static final String ADDRESS_NUMBER = "1";
+    public static final String ADDRESS_STREET = "Road Street";
+    public static final String ADDRESS_TOWN = "Edinburgh";
+    public static final String ADDRESS_OUTBOUND_POSTCODE = "EH12";
+    public static final String ADDRESS_INBOUND_POSTCODE = "1FG";
+
     public static final String APPOINTMENT_ID = "77e37b83-0483-4ba0-9ff1-acc070313e41";
     public static final LocalDateTime APPOINTMENT_DATE_TIME = LocalDateTime.of(2030, 1, 1, 9, 0);
     public static final String APPOINTMENT_NOTES = "This is a dummy note.";

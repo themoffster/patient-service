@@ -1,6 +1,12 @@
 [
   {
     "id": "72181737-7c07-4183-8f1c-9a181eec3006",
+    "address": {
+      "number": "1",
+      "street": "Road Street",
+      "town": "Edinburgh",
+      "postcode": "EH12 1FG"
+    },
     "contactDetails": {
       "email": "foo@bar.com",
       "mobilePhone": "07123456789"

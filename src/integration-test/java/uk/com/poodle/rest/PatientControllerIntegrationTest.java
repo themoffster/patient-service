@@ -58,7 +58,8 @@ class PatientControllerIntegrationTest {
             mapper.writeValueAsString(responseEntity.getBody()),
             new CustomComparator(
                 JSONCompareMode.STRICT,
-                new Customization("id", (o1, o2) -> true)));
+                new Customization("id", (o1, o2) -> true),
+                new Customization("address.id", (o1, o2) -> true)));
     }
 
     @TestWithData

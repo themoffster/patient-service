@@ -21,6 +21,10 @@ public class AddGuardianDetailsParams {
 
     @Valid
     @NotNull
+    Address address;
+
+    @Valid
+    @NotNull
     ContactDetails contactDetails;
 
     @NotNull

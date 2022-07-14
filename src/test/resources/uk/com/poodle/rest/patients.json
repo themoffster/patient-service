@@ -1,6 +1,13 @@
 [
   {
     "id": "67150f64-b235-4e07-af6b-4018aabc1e3e",
+    "address": {
+      "id": "33dc83d7-54cb-4abd-8faa-2bb8259d7a67",
+      "number": "1",
+      "street": "Road Street",
+      "town": "Edinburgh",
+      "postcode": "EH12 1FG"
+    },
     "dob": "2010-01-01",
     "firstname": "Joe",
     "lastname": "Bloggs",
