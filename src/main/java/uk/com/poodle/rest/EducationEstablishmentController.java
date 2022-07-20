@@ -3,6 +3,7 @@ package uk.com.poodle.rest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,9 +13,11 @@ import uk.com.poodle.domain.EducationEstablishment;
 import uk.com.poodle.service.EducationEstablishmentService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.ResponseEntity.ok;
 
 @Validated
 @RestController
@@ -27,5 +30,10 @@ public class EducationEstablishmentController {
     @PostMapping("/add")
     public ResponseEntity<EducationEstablishment> addEducationEstablishment(@RequestBody @Valid AddEducationEstablishmentParams params) {
         return ResponseEntity.status(CREATED).body(service.addEducationEstablishment(params));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<EducationEstablishment>> getEducationEstablishments() {
+        return ok(service.getEducationEstablishments());
     }
 }

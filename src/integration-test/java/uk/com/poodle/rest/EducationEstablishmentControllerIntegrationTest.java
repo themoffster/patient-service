@@ -12,6 +12,7 @@ import uk.com.poodle.domain.EducationEstablishment;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddEducationEstablishmentParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildEducationEstablishment;
 
@@ -33,5 +34,15 @@ class EducationEstablishmentControllerIntegrationTest extends AbstractController
                 new Customization("id", (o1, o2) -> true),
                 new Customization("address.id", (o1, o2) -> true),
                 new Customization("contactDetails.id", (o1, o2) -> true)));
+    }
+
+    @TestWithData
+    void shouldRetrieveAllEducationEstablishments() {
+        var establishments = restTemplate.getForEntity("/education-establishments", EducationEstablishment[].class);
+
+        assertEquals(OK, establishments.getStatusCode());
+        assertNotNull(establishments.getBody());
+        assertEquals(1, establishments.getBody().length);
+        assertEquals(buildEducationEstablishment(), establishments.getBody()[0]);
     }
 }

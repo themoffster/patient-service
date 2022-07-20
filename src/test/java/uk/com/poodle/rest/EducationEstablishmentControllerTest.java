@@ -15,10 +15,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import uk.com.poodle.domain.AddEducationEstablishmentParams;
 import uk.com.poodle.service.EducationEstablishmentService;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -60,6 +62,16 @@ class EducationEstablishmentControllerTest {
                 .contentType(APPLICATION_JSON)
                 .content(json))
             .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldRetrieveAllEducationEstablishments() throws Exception {
+        when(mockService.getEducationEstablishments()).thenReturn(List.of(buildEducationEstablishment()));
+
+        mvc.perform(get("/education-establishments")
+                .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(fileToString("education-establishments.json", getClass())));
     }
 
     private static Stream<Arguments> invalidAddEducationEstablishmentParams() {

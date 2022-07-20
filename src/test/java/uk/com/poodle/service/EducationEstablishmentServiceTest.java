@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.com.poodle.data.EducationEstablishmentRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,6 +18,7 @@ import static uk.com.poodle.Constants.EDUCATION_ESTABLISHMENT_ID;
 import static uk.com.poodle.data.EntityDataFactory.buildEducationEstablishmentEntity;
 import static uk.com.poodle.domain.DomainDataFactory.buildAddEducationEstablishmentParams;
 import static uk.com.poodle.domain.DomainDataFactory.buildEducationEstablishment;
+import static uk.com.poodle.service.EducationEstablishmentMapper.map;
 
 @ExtendWith(MockitoExtension.class)
 class EducationEstablishmentServiceTest {
@@ -52,5 +54,16 @@ class EducationEstablishmentServiceTest {
         var educationEstablishmentOptional = service.getEducationEstablishment(EDUCATION_ESTABLISHMENT_ID);
 
         assertTrue(educationEstablishmentOptional.isEmpty());
+    }
+
+    @Test
+    void shouldRetrieveAllEducationEstablishments() {
+        var establishment = buildEducationEstablishmentEntity(EDUCATION_ESTABLISHMENT_ID);
+        when(mockRepository.findAll()).thenReturn(List.of(establishment));
+
+        var establishments = service.getEducationEstablishments();
+
+        assertEquals(1, establishments.size());
+        assertTrue(establishments.contains(map(establishment)));
     }
 }

@@ -7,8 +7,11 @@ import uk.com.poodle.data.EducationEstablishmentRepository;
 import uk.com.poodle.domain.AddEducationEstablishmentParams;
 import uk.com.poodle.domain.EducationEstablishment;
 
+import java.util.List;
 import java.util.Optional;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
 import static uk.com.poodle.service.EducationEstablishmentMapper.map;
 
 @Slf4j
@@ -34,5 +37,12 @@ public class EducationEstablishmentService {
                 log.warn("Education establishment {}, not found.", id);
                 return Optional.empty();
             });
+    }
+
+    public List<EducationEstablishment> getEducationEstablishments() {
+        log.info("Retrieving all education establishments.");
+        return stream(repository.findAll().spliterator(), false)
+            .map(EducationEstablishmentMapper::map)
+            .collect(toList());
     }
 }

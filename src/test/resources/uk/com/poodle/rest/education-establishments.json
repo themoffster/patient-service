@@ -1,0 +1,17 @@
+[
+  {
+    "id": "1468967e-5ee7-4cfe-81df-794cfd65f8a2",
+    "address": {
+      "number": "1",
+      "street": "Road Street",
+      "town": "Edinburgh",
+      "postcode": "EH12 1FG"
+    },
+    "contactDetails": {
+      "email": "foo@bar.com",
+      "mobilePhone": "07123456789"
+    },
+    "name": "Glasgow Primary",
+    "type": "SCHOOL"
+  }
+]
